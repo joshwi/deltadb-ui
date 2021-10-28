@@ -1,0 +1,59 @@
+{
+    "sidebar": {
+        "active": false
+    },
+    "params": {
+        "view": "table",
+        "site": "pfr",
+        "category": "team",
+        "schema": "games"
+    },
+    "pages": {
+        "table": {
+            "games": {
+                "filters": [
+                    {
+                        "header": "YEAR",
+                        "name": "year",
+                        "active": true,
+                        "value": "20.*"
+                    },
+                    {
+                        "header": "WEEK",
+                        "name": "week",
+                        "active": true,
+                        "value": "[^\\d]+"
+                    },
+                    {
+                        "header": "TEAM",
+                        "name": "homeTeam",
+                        "active": true,
+                        "value": ".*City"
+                    }
+                ]
+            },
+            "picks": {
+                "filters": [
+                    {
+                        "header": "YEAR",
+                        "name": "year",
+                        "active": true,
+                        "value": "2.*"
+                    },
+                    {
+                        "header": "ROUND",
+                        "name": "round",
+                        "active": true,
+                        "value": "1"
+                    },
+                    {
+                        "header": "POSITION",
+                        "name": "position",
+                        "active": true,
+                        "value": "QB"
+                    }
+                ]
+            }
+        }
+    }
+}

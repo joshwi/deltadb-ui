@@ -1,4 +1,4 @@
-FROM node:17-alpine3.12 AS build
+FROM node:14-alpine AS build
 WORKDIR /app
 ARG PROXY_URL
 ENV REACT_APP_PROXY_URL=${PROXY_URL}

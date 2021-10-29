@@ -3,7 +3,7 @@ const types = require("./types")
 
 export function loadKeys() {
     return function (dispatch) {
-        return get(process.env.REACT_APP_PROXY_URL + `/api/v2/admin/db/keys`).then(keys => {
+        return get(`/api/v2/admin/db/keys`).then(keys => {
             dispatch({ type: types.LOAD_KEYS, keys: keys })
         }).catch(error => {
             throw error

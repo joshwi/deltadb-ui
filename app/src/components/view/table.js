@@ -195,7 +195,7 @@ function App(props) {
 					/>
 				</Col>
 				<Col xs="1" style={{ height: '2rem', margin: '12px' }}>
-					<CSVLink filename={'nfldb.csv'} data={prepareData(props.headers, data)} style={{backgroundColor: "transparent"}}>
+					<CSVLink filename={'deltadb.csv'} data={prepareData(props.headers, data)} style={{backgroundColor: "transparent"}}>
 					<button type="button" class="btn btn-sm" style={{ border: "transparent", backgroundColor: "#ce0e0e", color: "white" }}><span>Export</span></button>
 					</CSVLink>
 				</Col>

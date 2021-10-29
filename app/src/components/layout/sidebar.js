@@ -91,7 +91,7 @@ export default (props = {}) => {
                   </Nav.Link>
                 </div>
                 <Nav className="flex-column pt-3 pt-md-0">
-                  <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;NFLdb</span></button>
+                  <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></button>
                   <Dropdown.Divider className="my-3 border-indigo" />
 
                     <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>

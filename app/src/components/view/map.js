@@ -79,7 +79,7 @@ function MAP(props) {
             </header>
             <body>
                 <>
-                    <input type="search" id="search" class="form-control col-2" placeholder="Search NFLdb" onChange={(e) => console.log(e.target.value)}></input>
+                    <input type="search" id="search" class="form-control col-2" placeholder="Search deltaDB" onChange={(e) => console.log(e.target.value)}></input>
                     <div style={{ height: "100vh", width: "100vw" }} id="mapbox"></div>
                 </>
             </body>

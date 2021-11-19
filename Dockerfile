@@ -3,7 +3,7 @@ WORKDIR /app
 ARG PROXY_URL
 ENV REACT_APP_PROXY_URL=${PROXY_URL}
 COPY app/ /app
-RUN npm install
+RUN npm install --silent
 RUN npm run build
 FROM nginx:alpine
 COPY nginx/nginx.conf /etc/nginx/nginx.conf

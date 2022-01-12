@@ -18,6 +18,10 @@ import * as actions from "./store/actions"
 import initState from "./static/json/initialState.json"
 
 import "./static/scss/volt.scss";
+import LoginButton from './components/controller/login';
+import Profile from './components/controller/profile';
+import LogoutButton from './components/controller/logout';
+
 
 function App(props) {
 
@@ -34,6 +38,9 @@ function App(props) {
           <Sidebar {...props} />
           {props.status.sidebar && (
             <main className="content">
+              <LoginButton/>
+              <LogoutButton/>
+              <Profile/>
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path={"/table/:schema"} exact render={() => <Table {...props} />} />

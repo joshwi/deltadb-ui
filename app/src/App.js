@@ -7,7 +7,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import PropTypes from "prop-types"
 
 import Sidebar from "./components/layout/sidebar"
-import Parameters from "./components/controller/parameters"
 
 import Home from "./pages/home"
 import Table from "./pages/table"
@@ -24,35 +23,25 @@ import "./static/scss/volt.scss";
 
 function App(props) {
 
-  // console.log(props)
-
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     props.actions.loadKeys()
-    props.actions.loadColorThemes()
+    // props.actions.loadColorThemes()
     props.actions.initStatus(initState)
   }, [])
-
-  useEffect(() => {
-    let api_key = localStorage.getItem("user_data")
-    if(isAuthenticated && !api_key){
-      localStorage.setItem("user_data", JSON.stringify(user))
-    }
-  }, [isAuthenticated])
 
   return (
     <Router>
           <Sidebar {...props} />
-          {props.status.sidebar && (
+          {isAuthenticated && (
             <main className="content">
-              <Parameters/>
               <Switch>
                 <Route path="/" exact component={Home} />
-                <Route path={"/table/:schema"} exact render={() => <Table {...props} />} />
+                <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} />
                 <Route path={"/chart/:schema"} exact render={() => <Chart {...props} />} />
                 <Route path={"/explorer/:schema"} exact render={() => <Explorer {...props} />} />
-                <Route path={"/map/:schema"} exact render={() => <Map {...props} />} />
+                <Route path={"/map"} exact render={() => <Map {...props} />} />
                 <Route component={NotFound} />
               </Switch>
             </main>
@@ -69,6 +58,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    auth: state.auth,
     keys: state.keys,
     teams: state.teams,
     status: state.status

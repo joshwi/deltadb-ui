@@ -5,55 +5,52 @@
     "params": {
         "view": "table",
         "category": "nfl",
-        "node": "games",
-        "schema": "nfl_games"
+        "node": "games"
     },
     "pages": {
-        "table": {
-            "nfl_games": {
-                "filters": [
-                    {
-                        "header": "year",
-                        "name": "year",
-                        "active": true,
-                        "value": "20.*"
-                    },
-                    {
-                        "header": "week",
-                        "name": "week",
-                        "active": true,
-                        "value": "[^\\d]+"
-                    },
-                    {
-                        "header": "home team",
-                        "name": "home_team",
-                        "active": true,
-                        "value": ".*City"
-                    }
-                ]
-            },
-            "picks": {
-                "filters": [
-                    {
-                        "header": "YEAR",
-                        "name": "year",
-                        "active": true,
-                        "value": "2.*"
-                    },
-                    {
-                        "header": "ROUND",
-                        "name": "round",
-                        "active": true,
-                        "value": "1"
-                    },
-                    {
-                        "header": "POSITION",
-                        "name": "position",
-                        "active": true,
-                        "value": "QB"
-                    }
-                ]
-            }
+        "table_nfl_games": {
+            "filters": [
+                {
+                    "header": "year",
+                    "name": "year",
+                    "active": true,
+                    "value": "20.*"
+                },
+                {
+                    "header": "week",
+                    "name": "week",
+                    "active": true,
+                    "value": "[^\\d]+"
+                },
+                {
+                    "header": "home team",
+                    "name": "home_team",
+                    "active": true,
+                    "value": ".*City"
+                }
+            ]
+        },
+        "table_nfl_picks": {
+            "filters": [
+                {
+                    "header": "YEAR",
+                    "name": "year",
+                    "active": true,
+                    "value": "2.*"
+                },
+                {
+                    "header": "ROUND",
+                    "name": "round",
+                    "active": true,
+                    "value": "1"
+                },
+                {
+                    "header": "POSITION",
+                    "name": "position",
+                    "active": true,
+                    "value": "QB"
+                }
+            ]
         }
     }
 }

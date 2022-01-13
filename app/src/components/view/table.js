@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from 'react';
-import { Container, Col, Row, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Label } from 'reactstrap';
+import { Container, Col, Row } from 'reactstrap';
 import { CSVLink } from 'react-csv';
 import _ from "underscore"
 import {
@@ -196,28 +196,9 @@ function App(props) {
 				</Col>
 				<Col xs="1" style={{ height: '2rem', margin: '12px' }}>
 					<CSVLink filename={'deltadb.csv'} data={prepareData(props.headers, data)} style={{backgroundColor: "transparent"}}>
-					<button type="button" class="btn btn-sm" style={{ border: "transparent", backgroundColor: "#ce0e0e", color: "white" }}><span>Export</span></button>
+					<button type="button" className="btn btn-sm" style={{ border: "transparent", backgroundColor: "#ce0e0e", color: "white" }}><span>Export</span></button>
 					</CSVLink>
 				</Col>
-				{/* <Col xs="1">
-					<div style={{ display: 'table', height: '50px' }}>
-						<div style={{ color: 'white', display: 'table-cell', verticalAlign: 'middle' }}>
-							<Dropdown direction="left" size="sm" isOpen={visible} toggle={() => SetVisible(!visible)}>
-								<DropdownToggle caret color="success">{pageSize}</DropdownToggle>
-								<DropdownMenu>
-									{[10, 25, 50, 100].map(pageSize => {
-										return (
-											<DropdownItem>
-												<Label onClick={() => setPageSize(Number(pageSize))}>
-													{pageSize} Items
-											</Label>
-											</DropdownItem>)
-									})}
-								</DropdownMenu>
-							</Dropdown>
-						</div>
-					</div>
-				</Col> */}
 			</Row>
 			<Row style={{ border: "none", overflowX: "visible", overflowY: "hidden" }}>
 				<Col>

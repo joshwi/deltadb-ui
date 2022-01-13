@@ -15,7 +15,7 @@ function FILTER(props) {
 
     function submit(key) {
         if (key === "Enter") {
-            try { props.actions.updatePageState(props.status.params.view, props.schema, { search: search }) }
+            try { props.actions.updatePage(`${props.status.params.view}_${props.schema}`, { search: search }) }
             catch (err) { console.log(err) }
             SetSearch(true)
         }
@@ -50,7 +50,7 @@ function FILTER(props) {
             if (props.keys[node].headers.length === props.keys[node].keys.length) {
                 let temp = props.keys[node].headers.map((entry, index) => { return { header: entry, name: props.keys[node].keys[index], active: false, value: "" } })
                 try {
-                    props.status.pages[props.status.params.view][props.schema].filters.map((entry) => {
+                    props.status.pages[`${props.status.params.view}_${props.schema}`].filters.map((entry) => {
                         temp = temp.map(index => { return entry.name === index.name ? entry : index })
                     })
                 } catch (err) { console.log(err) }
@@ -78,14 +78,14 @@ function FILTER(props) {
     useEffect(() => {
         if (headers && headers.length > 0 && props.schema) {
             try {
-                props.actions.updatePageState(props.status.params.view, props.schema, { headers: headers })
+                props.actions.updatePage(`${props.status.params.view}_${props.schema}`, { headers: headers })
             } catch (err) { console.log(err) }
         }
     }, [headers])
 
     useEffect(() => {
         if (search && filters && filters.length > 0) {
-            try { props.actions.updatePageState(props.status.params.view, props.schema, { filters: filters }) }
+            try { props.actions.updatePage(`${props.status.params.view}_${props.schema}`, { filters: filters }) }
             catch (err) { console.log(err) }
             SetSearch(false)
         }
@@ -108,7 +108,7 @@ function FILTER(props) {
             }
             {filters && (
                 <Col className="centerDiv">
-                    <button type="button" class="btn" style={{border: "none", backgroundColor: "#ce0e0e"}} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
+                    <button type="button" className="btn" style={{border: "none", backgroundColor: "#ce0e0e"}} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
                     <span style={{ margin: "10px" }}></span>
                     <Dropdown isOpen={visible.filters} toggle={() => SetVisible({...visible, filters: !visible.filters})}>
                         <DropdownToggle caret style={{border: "none", backgroundColor: "#ce0e0e", color: "white"}}>Filters</DropdownToggle>

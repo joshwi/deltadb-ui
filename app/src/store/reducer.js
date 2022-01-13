@@ -1,6 +1,17 @@
 const { combineReducers } = require("redux")
 const types = require("./types")
 
+const authReducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.LOAD_AUTH:
+            return { ...state, ...action.user }
+        case types.UPDATE_AUTH:
+            return { ...state, ...action.user }
+        default:
+            return state
+    }
+}
+
 const keyReducer = (state = {}, action) => {
     switch (action.type) {
         case types.LOAD_KEYS:
@@ -25,6 +36,8 @@ const siteReducer = (state = {}, action) => {
             return action.status
         case types.UPDATE_PAGE_STATUS:
             return {...state, pages: {...state.pages, [action.view]: {...state.pages[action.view], [action.schema]: { ...state.pages[action.view][action.schema], ...action.data}}}}
+        case types.UPDATE_PAGE:
+            return {...state, pages: {...state.pages, [action.key]: {...state.pages[action.key], ...action.data}}}
         case types.LOAD_PARAMS:
             return { ...state, params: action.params }
         case types.SET_PARAMS:
@@ -37,6 +50,7 @@ const siteReducer = (state = {}, action) => {
 }
 
 const rootReducer = combineReducers({
+    auth:  authReducer,
     status: siteReducer,
     keys: keyReducer,
     teams: teamReducer

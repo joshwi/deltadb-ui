@@ -33,6 +33,12 @@ export function updatePageState(view, schema, data) {
     }
 }
 
+export function updatePage(key, data) {
+    return function (dispatch) {
+        return dispatch({ type: types.UPDATE_PAGE, key: key, data: data  })
+    }
+}
+
 export function loadParams(params) {
     return function (dispatch) {
         return dispatch({ type: types.LOAD_PARAMS, params: params })
@@ -48,6 +54,20 @@ export function setParams(params) {
 export function toggleSidebar() {
     return function (dispatch) {
         return dispatch({ type: types.TOGGLE_SIDEBAR })
+    }
+}
+
+
+export function loadAuth() {
+    return function (dispatch) {
+        return dispatch({ type: types.LOAD_AUTH })
+    }
+}
+
+
+export function updateAuth(user) {
+    return function (dispatch) {
+        return dispatch({ type: types.UPDATE_AUTH, user: user })
     }
 }
 

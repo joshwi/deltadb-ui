@@ -57,19 +57,19 @@ export default (props = {}) => {
                   </button>
                   <Dropdown.Divider className="my-3 border-indigo" />
                   <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
-                    <Link style={{ textDecoration: 'none' }} to={`/table/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "table" })}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/table/${props.status.params && props.status.params.category ? props.status.params.category : "nfl"}/${props.status.params && props.status.params.node ? props.status.params.node : "games"}`} onClick={() => props.actions.setParams({ view: "table" })}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
                   </button>
                   <div style={{ padding: "5px" }} />
-                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-cursor" />
-                    <Link style={{ textDecoration: 'none' }} to={`/explorer/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Explorer</span></Link>
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
+                    <Link style={{ textDecoration: 'none' }} to={`/explorer/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "explorer" })}><i className="bi bi-cursor" /><span>&nbsp;&nbsp;Explorer</span></Link>
                   </button>
                   <div style={{ padding: "5px" }} />
-                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-bar-chart" />
-                    <Link style={{ textDecoration: 'none' }} to={"/"} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Charts</span></Link>
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
+                    <Link style={{ textDecoration: 'none' }} to={"/"} onClick={() => props.actions.setParams({ view: "explorer" })}><i className="bi bi-bar-chart" /><span>&nbsp;&nbsp;Charts</span></Link>
                   </button>
                   <div style={{ padding: "5px" }} />
-                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-map" />
-                    <Link style={{ textDecoration: 'none' }} to={"/"} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Maps</span></Link>
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
+                    <Link style={{ textDecoration: 'none' }} to={"/map"} onClick={() => props.actions.setParams({ view: "explorer" })}><i className="bi bi-map" /><span>&nbsp;&nbsp;Maps</span></Link>
                   </button>
                   <div style={{ padding: "5px" }} />
                 </Nav>

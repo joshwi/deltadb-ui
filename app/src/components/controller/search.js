@@ -47,8 +47,8 @@ function FILTER(props) {
 
     useEffect(() => {
         if (props.keys[node] && props.schema) {
-            if (props.keys[node].allHeaders.length === props.keys[node].allKeys.length) {
-                let temp = props.keys[node].allHeaders.map((entry, index) => { return { header: entry, name: props.keys[node].allKeys[index], active: false, value: "" } })
+            if (props.keys[node].headers.length === props.keys[node].keys.length) {
+                let temp = props.keys[node].headers.map((entry, index) => { return { header: entry, name: props.keys[node].keys[index], active: false, value: "" } })
                 try {
                     props.status.pages[props.status.params.view][props.schema].filters.map((entry) => {
                         temp = temp.map(index => { return entry.name === index.name ? entry : index })
@@ -61,12 +61,13 @@ function FILTER(props) {
 
     useEffect(() => {
         if (props.keys[node] !== undefined) {
-            if (props.keys[node].allHeaders.length === props.keys[node].allKeys.length) {
-                let temp = props.keys[node].allHeaders.map((entry, index) => {
-                    if (props.keys[node].primaryHeaders.indexOf(entry) > -1) {
-                        return { header: entry, name: props.keys[node].allKeys[index], active: true }
+            if (props.keys[node].headers.length === props.keys[node].keys.length) {
+
+                let temp = props.keys[node].headers.map((entry, index) => {
+                    if (props.keys[node].primary.indexOf(entry) > -1) {
+                        return { header: entry, name: props.keys[node].keys[index], active: true }
                     } else {
-                        return { header: entry, name: props.keys[node].allKeys[index], active: false }
+                        return { header: entry, name: props.keys[node].keys[index], active: false }
                     }
                 })
                 SetHeaders(temp)
@@ -96,15 +97,10 @@ function FILTER(props) {
             {filters && filters.filter(x => x.active === true).map((entry, index) => {
                 if (index < 3) {
                     return <Col className="centerDiv" key={index} style={{marginBottom: "10px"}}>
-                        {/* <InputGroup> */}
-                        {/* <InputGroupAddon addonType="prepend">
-                                        <InputGroupText style={{fontSize: "11px"}}><strong>{entry.header}</strong></InputGroupText>
-                                    </InputGroupAddon> */}
                         <FormGroup>
-                            <Label style={{ color: "white" }}>{entry.header}</Label>
+                            <Label style={{ color: "white" }}>{entry.header.toUpperCase()}</Label>
                             <Input style={{backgroundColor: "#283448", color: "white"}} placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
                         </FormGroup>
-                        {/* </InputGroup> */}
                     </Col>
                 }
                 else { return <></> }

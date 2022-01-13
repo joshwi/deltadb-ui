@@ -1,8 +1,10 @@
 const get = async function(url){
     let headers = new Headers()
+    let token = localStorage.getItem("api_key")
     headers.set('Accept', 'application/json')
     headers.set('Content-Type', 'application/json')
     headers.set('Access-Control-Allow-Origin', '*')
+    headers.set('Authorization', `Bearer ${token}`)
     if(url){
         let response = await fetch(url, {
             method: "GET",
@@ -17,9 +19,11 @@ const get = async function(url){
 
 const post = async function(url, body){
     let headers = new Headers()
+    let token = localStorage.getItem("api_key")
     headers.set('Accept', 'application/json')
     headers.set('Content-Type', 'application/json')
     headers.set('Access-Control-Allow-Origin', '*')
+    headers.set('Authorization', `Bearer ${token}`)
     if(url){
         let response = await fetch(url, {
             method: "POST",

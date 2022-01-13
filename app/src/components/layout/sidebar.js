@@ -6,67 +6,23 @@ import { CSSTransition } from 'react-transition-group';
 import { Nav, Dropdown, Navbar } from '@themesberg/react-bootstrap';
 import { Button } from "reactstrap"
 import { Link } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default (props = {}) => {
-  // const location = useLocation();
-  // const { pathname } = location;
+
   const [show, setShow] = useState(false);
   const showClass = show ? "show" : "";
 
   const onCollapse = () => setShow(!show);
 
-  // const CollapsableNavItem = (props) => {
-  //   const { eventKey, title, icon, children = null } = props;
-  //   const defaultKey = pathname.indexOf(eventKey) !== -1 ? eventKey : "";
-
-  //   return (
-  //     <Accordion as={Nav.Item} defaultActiveKey={defaultKey}>
-  //       <Accordion.Item eventKey={eventKey}>
-  //         <Accordion.Button as={Nav.Link} className="d-flex justify-content-between align-items-center">
-  //           <span>
-  //             <span className="sidebar-icon"> </span>
-  //             <span className="sidebar-text">{title}</span>
-  //           </span>
-  //         </Accordion.Button>
-  //         <Accordion.Body className="multi-level">
-  //           <Nav className="flex-column">
-  //             {children}
-  //           </Nav>
-  //         </Accordion.Body>
-  //       </Accordion.Item>
-  //     </Accordion>
-  //   );
-  // };
-
-  // const NavItem = (props) => {
-  //   const { title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary" } = props;
-  //   const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
-  //   const navItemClassName = link === pathname ? "active" : "";
-  //   const linkProps = external ? { href: link } : { as: Link, to: link };
-
-  //   return (
-  //     <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>
-  //       <Nav.Link {...linkProps} target={target} className={classNames}>
-  //         <span>
-  //           {icon ? <span className="sidebar-icon"> </span> : null}
-  //           {image ? <Image width={20} height={20} className="sidebar-icon svg-icon" /> : null}
-
-  //           <span className="sidebar-text">{title}</span>
-  //         </span>
-  //         {badgeText ? (
-  //           <Badge pill bg={badgeBg} text={badgeColor} className="badge-md notification-count ms-2">{badgeText}</Badge>
-  //         ) : null}
-  //       </Nav.Link>
-  //     </Nav.Item>
-  //   );
-  // };
+  const { user, loginWithRedirect, logout } = useAuth0();
 
   return (
     <>
       { props.status.sidebar && (
         <>
           <Navbar expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-md-none">
-            <Navbar.Brand className="me-lg-5" as={Link} >
+            <Navbar.Brand className="me-lg-5" >
               <i className="bi bi-server" style={{ color: "#ce0e0e" }} />
             </Navbar.Brand>
             <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
@@ -82,27 +38,58 @@ export default (props = {}) => {
                       <i className="bi bi-person-circle" style={{ color: "#ce0e0e", fontSize: '2rem' }} />
                     </div>
                     <div className="d-block">
-                      <h6>Hi, User</h6>
-                      {/* <Button as={Link} variant="secondary" size="xs" className="text-dark">Sign Out</Button> */}
+                      <h6>Hi, {user && user.given_name && user.family_name ? `${user.given_name} ${user.family_name}` : "Guest"}</h6>
+                      {!user && <button type="button" className="btn btn-xs" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }} onClick={() => loginWithRedirect()}>Login</button>}
+                      {"\t"}
+                      {!user && <button type="button" className="btn btn-xs" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }} onClick={() => loginWithRedirect()}>Sign Up</button>}
+                      {user && <button type="button" className="btn btn-xs" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }} onClick={() => logout({ returnTo: window.location.origin })}>Logout</button>}
+                      {"\t"}
+                      {user && <button type="button" className="btn btn-xs" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}><i className="bi bi-gear" /><span>&nbsp;&nbsp;Settings</span></button>}
                     </div>
                   </div>
                   <Nav.Link className="collapse-close d-md-none" onClick={onCollapse}>
-                    <i class="bi bi-x"></i>
+                    <i className="bi bi-x"></i>
                   </Nav.Link>
                 </div>
                 <Nav className="flex-column pt-3 pt-md-0">
-                  <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></button>
-                  <Dropdown.Divider className="my-3 border-indigo" />
-
-                    <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
-                    <Link style={{ textDecoration: 'none' }} to={`/table/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "table" })}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
-                    </button>
-                  <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-cursor" />
-                  <Link style={{ textDecoration: 'none' }} to={`/explorer/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Explorer</span></Link>
+                  <button type="button" className="btn btn-lg">
+                    <Link style={{ textDecoration: 'none' }} to={"/"} style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem", textDecoration: "none" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></Link>
                   </button>
                   <Dropdown.Divider className="my-3 border-indigo" />
-                  <button type="button" class="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i class="bi bi-gear" /><span>&nbsp;&nbsp;Settings</span></button>
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
+                    <Link style={{ textDecoration: 'none' }} to={`/table/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "table" })}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
+                  </button>
+                  <div style={{ padding: "5px" }} />
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-cursor" />
+                    <Link style={{ textDecoration: 'none' }} to={`/explorer/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Explorer</span></Link>
+                  </button>
+                  <div style={{ padding: "5px" }} />
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-bar-chart" />
+                    <Link style={{ textDecoration: 'none' }} to={"/"} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Charts</span></Link>
+                  </button>
+                  <div style={{ padding: "5px" }} />
+                  <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}><i className="bi bi-map" />
+                    <Link style={{ textDecoration: 'none' }} to={"/"} onClick={() => props.actions.setParams({ view: "explorer" })}><span>&nbsp;&nbsp;Maps</span></Link>
+                  </button>
+                  <div style={{ padding: "5px" }} />
                 </Nav>
+
+                {!show && (
+                  <Nav className="flex-column pt-3 pt-md-0" style={{ bottom: "0px" }}>
+                    <Dropdown.Divider className="my-3 border-indigo" />
+                    <div className="d-flex justify-content-center">
+                      <i className="bi bi-person-circle" style={{ color: "#ce0e0e", fontSize: '2rem' }} />
+                    </div>
+                    <div className="d-flex justify-content-center">
+                      <Link style={{ textDecoration: 'none' }} to={"/"} style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem", textDecoration: "none" }}><h6>Hi, {user && user.given_name && user.family_name ? `${user.given_name} ${user.family_name}` : "Guest"}</h6></Link>
+                    </div>
+                    <div style={{ padding: "5px" }} />
+                    {!user && <button type="button" className="btn" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }} onClick={() => loginWithRedirect()}>Login / Sign Up</button>}
+                    {user && <button type="button" className="btn" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }} onClick={() => logout({ returnTo: window.location.origin })}>Logout</button>}
+                    <div style={{ padding: "5px" }} />
+                    {user && <button type="button" className="btn" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}><i className="bi bi-gear" /><span>&nbsp;&nbsp;Settings</span></button>}
+                  </Nav>
+                )}
               </div>
             </SimpleBar>
           </CSSTransition>

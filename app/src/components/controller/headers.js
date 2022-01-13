@@ -24,12 +24,12 @@ function HEADER(props) {
 
     useEffect(() => {
         if (props.keys[node] !== undefined) {
-            if (props.keys[node].allHeaders.length === props.keys[node].allKeys.length) {
-                let temp = props.keys[node].allHeaders.map((entry, index) => {
-                    if (props.keys[node].primaryHeaders.indexOf(entry) > -1) {
-                        return { header: entry, name: props.keys[node].allKeys[index], active: true }
+            if (props.keys[node].headers.length === props.keys[node].keys.length) {
+                let temp = props.keys[node].headers.map((entry, index) => {
+                    if (props.keys[node].primary.indexOf(entry) > -1) {
+                        return { header: entry, name: props.keys[node].keys[index], active: true }
                     } else {
-                        return { header: entry, name: props.keys[node].allKeys[index], active: false }
+                        return { header: entry, name: props.keys[node].keys[index], active: false }
                     }
                 })
                 SetHeaders(temp)

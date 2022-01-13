@@ -3,9 +3,11 @@ import React, { useEffect } from 'react';
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import PropTypes from "prop-types"
 
 import Sidebar from "./components/layout/sidebar"
+import Parameters from "./components/controller/parameters"
 
 import Home from "./pages/home"
 import Table from "./pages/table"
@@ -19,9 +21,12 @@ import initState from "./static/json/initialState.json"
 
 import "./static/scss/volt.scss";
 
+
 function App(props) {
 
   // console.log(props)
+
+  const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     props.actions.loadKeys()
@@ -29,11 +34,19 @@ function App(props) {
     props.actions.initStatus(initState)
   }, [])
 
+  useEffect(() => {
+    let api_key = localStorage.getItem("user_data")
+    if(isAuthenticated && !api_key){
+      localStorage.setItem("user_data", JSON.stringify(user))
+    }
+  }, [isAuthenticated])
+
   return (
     <Router>
           <Sidebar {...props} />
           {props.status.sidebar && (
             <main className="content">
+              <Parameters/>
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path={"/table/:schema"} exact render={() => <Table {...props} />} />

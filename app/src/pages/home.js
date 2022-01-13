@@ -5,11 +5,15 @@ import { Container, Row, Col } from "reactstrap"
 function Home() {
 
     return (
-        <Container fluid={true}>
+        <div style={{marginTop: "2rem"}}>
             <Row>
-                <Col></Col>
+                <Col>
+                    <div className="d-flex justify-content-center">
+                        {/* <h2 style={{color: "white"}}>Welcome to deltaDB</h2> */}
+                    </div>
+                </Col>
             </Row>
-        </Container>
+        </div>
     )
 }
 

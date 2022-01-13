@@ -1,7 +1,7 @@
 /*eslint-disable*/
 //JS Packages
 import React, { useState, useEffect, useRef } from "react";
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from '!mapbox-gl';
 //React components
 
 require('dotenv').config()

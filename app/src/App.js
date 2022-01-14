@@ -23,11 +23,10 @@ import "./static/scss/volt.scss";
 
 function App(props) {
 
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
     props.actions.loadKeys()
-    // props.actions.loadColorThemes()
     props.actions.initStatus(initState)
   }, [])
 
@@ -58,9 +57,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
     keys: state.keys,
-    teams: state.teams,
     status: state.status
   }
 }

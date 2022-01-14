@@ -31,7 +31,6 @@ function Component(props) {
                 SetSearch(props.status.pages[`table_${nodename}`].search ? props.status.pages[`table_${nodename}`].search : !search)
                 SetData(props.status.pages[`table_${nodename}`].data ? props.status.pages[`table_${nodename}`].data : [])
             } catch (err) { console.log(err) }
-            // SetNodeName(nodename)
         }
     }, [props.status.params, props.status.pages, nodename])
 
@@ -52,11 +51,7 @@ function Component(props) {
             let params = { filter: cypher }
             Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
-            // let testing = new URLSearchParams(params)
-            // console.log(`/api/v2/admin/db/node/${node}` + testing.toString())
-
             if (filters.length > 0 && cypher !== props.status.pages[`table_${nodename}`].query) {
-                // get(`/api/v2/admin/db/node/${node}` + testing.toString()).then(result => SetData(result))
                 get(url).then(result => SetData(result))
             }
         }

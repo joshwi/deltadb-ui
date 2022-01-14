@@ -11,15 +11,15 @@ export function loadKeys() {
     }
 }
 
-export function loadColorThemes() {
-    return function (dispatch) {
-        return get(`/api/v2/admin/db/node/colors?query=n.tag=~'.*'`).then(teams => {
-            dispatch({ type: types.LOAD_COLOR_THEMES, teams: teams })
-        }).catch(error => {
-            throw error
-        })
-    }
-}
+// export function loadColorThemes() {
+//     return function (dispatch) {
+//         return get(`/api/v2/admin/db/node/colors?query=n.tag=~'.*'`).then(teams => {
+//             dispatch({ type: types.LOAD_COLOR_THEMES, teams: teams })
+//         }).catch(error => {
+//             throw error
+//         })
+//     }
+// }
 
 export function initStatus(status) {
     return function (dispatch) {
@@ -54,20 +54,6 @@ export function setParams(params) {
 export function toggleSidebar() {
     return function (dispatch) {
         return dispatch({ type: types.TOGGLE_SIDEBAR })
-    }
-}
-
-
-export function loadAuth() {
-    return function (dispatch) {
-        return dispatch({ type: types.LOAD_AUTH })
-    }
-}
-
-
-export function updateAuth(user) {
-    return function (dispatch) {
-        return dispatch({ type: types.UPDATE_AUTH, user: user })
     }
 }
 

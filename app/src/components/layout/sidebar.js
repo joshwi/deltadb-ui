@@ -53,7 +53,7 @@ export default (props = {}) => {
                 </div>
                 <Nav className="flex-column pt-3 pt-md-0">
                   <button type="button" className="btn btn-lg">
-                    <Link style={{ textDecoration: 'none' }} to={"/"} style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem", textDecoration: "none" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></Link>
+                    <Link to={"/"} style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem", textDecoration: "none" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></Link>
                   </button>
                   <Dropdown.Divider className="my-3 border-indigo" />
                   <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
@@ -73,7 +73,6 @@ export default (props = {}) => {
                   </button>
                   <div style={{ padding: "5px" }} />
                 </Nav>
-
                 {!show && (
                   <Nav className="flex-column pt-3 pt-md-0" style={{ bottom: "0px" }}>
                     <Dropdown.Divider className="my-3 border-indigo" />
@@ -81,7 +80,7 @@ export default (props = {}) => {
                       <i className="bi bi-person-circle" style={{ color: "#ce0e0e", fontSize: '2rem' }} />
                     </div>
                     <div className="d-flex justify-content-center">
-                      <Link style={{ textDecoration: 'none' }} to={"/"} style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem", textDecoration: "none" }}><h6>Hi, {user && user.given_name && user.family_name ? `${user.given_name} ${user.family_name}` : "Guest"}</h6></Link>
+                      <Link to={"/"} style={{ border: "transparent", backgroundColor: "transparent", color: "#ce0e0e", fontSize: "1.5rem", textDecoration: "none" }}><h6>Hi, {user && user.given_name && user.family_name ? `${user.given_name} ${user.family_name}` : "Guest"}</h6></Link>
                     </div>
                     <div style={{ padding: "5px" }} />
                     {!user && <button type="button" className="btn" style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }} onClick={() => loginWithRedirect()}>Login / Sign Up</button>}

@@ -53,7 +53,7 @@ function Forms(props) {
         }
     ]
 
-    useEffect(() => {console.log(test)}, [test])
+    // useEffect(() => {console.log(test)}, [test])
 
     function drawForm(input, index) {
 

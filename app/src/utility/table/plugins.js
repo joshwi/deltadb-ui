@@ -2,7 +2,7 @@ import React from "react"
 
 function pagination(props) {
 
-    console.log(props)
+    // console.log(props)
 
     return (
         <div className="btn-group">

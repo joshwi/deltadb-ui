@@ -1,30 +1,10 @@
 const { combineReducers } = require("redux")
 const types = require("./types")
 
-const authReducer = (state = {}, action) => {
-    switch (action.type) {
-        case types.LOAD_AUTH:
-            return { ...state, ...action.user }
-        case types.UPDATE_AUTH:
-            return { ...state, ...action.user }
-        default:
-            return state
-    }
-}
-
 const keyReducer = (state = {}, action) => {
     switch (action.type) {
         case types.LOAD_KEYS:
             return { ...state, ...action.keys }
-        default:
-            return state
-    }
-}
-
-const teamReducer = (state = {}, action) => {
-    switch (action.type) {
-        case types.LOAD_COLOR_THEMES:
-            return { ...state, colors: action.teams }
         default:
             return state
     }
@@ -50,10 +30,8 @@ const siteReducer = (state = {}, action) => {
 }
 
 const rootReducer = combineReducers({
-    auth:  authReducer,
     status: siteReducer,
-    keys: keyReducer,
-    teams: teamReducer
+    keys: keyReducer
 })
 
 export default rootReducer

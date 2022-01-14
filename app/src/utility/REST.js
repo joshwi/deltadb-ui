@@ -1,3 +1,26 @@
+var axios = require('axios');
+
+const POST = async function(url, body){
+
+    let token = localStorage.getItem("api_key")
+
+    let output = await axios({
+        url: url,
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${token}`
+        },
+        data : JSON.stringify(body)
+      })
+    .then(function (response) {return response.data})
+    .catch(function (error) { console.log(error); return "" });
+
+    return output
+    
+}
+
 const get = async function(url){
     let headers = new Headers()
     let token = localStorage.getItem("api_key")
@@ -37,4 +60,4 @@ const post = async function(url, body){
     }
 }
 
-export {get, post}
+export {get, post, POST}

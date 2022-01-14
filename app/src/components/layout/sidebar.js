@@ -61,7 +61,7 @@ export default (props = {}) => {
                   </button>
                   <div style={{ padding: "5px" }} />
                   <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
-                    <Link style={{ textDecoration: 'none' }} to={`/explorer/${props.status.params && props.status.params.schema ? props.status.params.schema : "season"}`} onClick={() => props.actions.setParams({ view: "explorer" })}><i className="bi bi-cursor" /><span>&nbsp;&nbsp;Explorer</span></Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/explorer`} onClick={() => props.actions.setParams({ view: "explorer" })}><i className="bi bi-cursor" /><span>&nbsp;&nbsp;Explorer</span></Link>
                   </button>
                   <div style={{ padding: "5px" }} />
                   <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>

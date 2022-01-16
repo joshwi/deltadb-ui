@@ -1,5 +1,20 @@
-const { get } = require("../utility/REST")
+const { get, POSTY } = require("../utility/REST")
 const types = require("./types")
+
+require('dotenv').config()
+
+const AUTH0_API_CLIENT_ID = process.env.REACT_APP_AUTH0_API_CLIENT_ID
+
+export function updateAuth() {
+    return function (dispatch) {
+        return get(`/token/${AUTH0_API_CLIENT_ID}`)
+            .then(credentials => {
+                dispatch({ type: types.UPDATE_AUTH, credentials: credentials })
+            }).catch(error => {
+                throw error
+            })
+    }
+}
 
 export function loadKeys() {
     return function (dispatch) {
@@ -27,15 +42,21 @@ export function initStatus(status) {
     }
 }
 
+export function updateCategory(key, data) {
+    return function (dispatch) {
+        return dispatch({ type: types.UPDATE_CATEGORY, key: key, data: data })
+    }
+}
+
 export function updatePageState(view, schema, data) {
     return function (dispatch) {
-        return dispatch({ type: types.UPDATE_PAGE_STATUS, view: view, schema: schema, data: data  })
+        return dispatch({ type: types.UPDATE_PAGE_STATUS, view: view, schema: schema, data: data })
     }
 }
 
 export function updatePage(key, data) {
     return function (dispatch) {
-        return dispatch({ type: types.UPDATE_PAGE, key: key, data: data  })
+        return dispatch({ type: types.UPDATE_PAGE, key: key, data: data })
     }
 }
 

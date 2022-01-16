@@ -1,17 +1,33 @@
 var axios = require('axios');
 
-const POST = async function(url, body){
+const POSTY = async function(url, body, headers={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'}){
 
-    let token = localStorage.getItem("api_key")
+    // let token = localStorage.getItem("api_key")
+    // headers['Authorization'] = `Bearer ${token}`
 
     let output = await axios({
         url: url,
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: headers,
+        data : JSON.stringify(body)
+      })
+    .then(function (response) {return response.data})
+    .catch(function (error) { console.log(error); return "" });
+
+    return output
+    
+}
+
+const POST = async function(url, body, headers={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'}){
+
+    let token = localStorage.getItem("api_key")
+
+    headers['Authorization'] = `Bearer ${token}`
+
+    let output = await axios({
+        url: url,
+        method: 'POST',
+        headers: headers,
         data : JSON.stringify(body)
       })
     .then(function (response) {return response.data})
@@ -60,4 +76,4 @@ const post = async function(url, body){
     }
 }
 
-export {get, post, POST}
+export {get, post, POST, POSTY}

@@ -22,6 +22,8 @@ import "./static/scss/volt.scss";
 
 
 function App(props) {
+  
+  console.log(props)
 
   const { isAuthenticated } = useAuth0();
 
@@ -29,6 +31,12 @@ function App(props) {
     props.actions.loadKeys()
     props.actions.initStatus(initState)
   }, [])
+
+  useEffect(() => {
+    if(isAuthenticated && !props.auth.access_token) {
+      props.actions.updateAuth()
+    }
+  }, [isAuthenticated])
 
   return (
     <Router>
@@ -50,6 +58,7 @@ function App(props) {
 }
 
 App.propTypes = {
+  auth: PropTypes.object.isRequired,
   keys: PropTypes.object.isRequired,
   status: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
@@ -57,6 +66,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    auth: state.auth,
     keys: state.keys,
     status: state.status
   }

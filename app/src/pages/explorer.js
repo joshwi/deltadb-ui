@@ -3,7 +3,7 @@ import { Container, Row, Col } from "reactstrap"
 // import SearchBar from "../components/controller/search"
 import _ from "underscore"
 import D3 from "../components/view/explorer"
-import Draggable from "react-draggable"
+// import Draggable from "react-draggable"
 import { POST } from "../utility/REST"
 
 function Explorer(props) {

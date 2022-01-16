@@ -1,5 +1,8 @@
 const { get, POSTY } = require("../utility/REST")
 const types = require("./types")
+import { useAuth0 } from "@auth0/auth0-react";
+
+const { getAccessTokenSilently } = useAuth0();
 
 export function updateAuth() {
     return function (dispatch) {

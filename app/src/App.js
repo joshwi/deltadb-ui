@@ -25,7 +25,7 @@ function App(props) {
   
   console.log(props)
 
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     props.actions.loadKeys()

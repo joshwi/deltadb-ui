@@ -13,7 +13,7 @@ function Explorer(props) {
 
     useEffect(() => {
         const data = { "cypher": "MATCH p=(a:nfl_teams)-[r:played_in]->(b:nfl_games) WHERE b.week=~'[^\\d]+' AND b.year='2020' RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link" }
-        POST("/api/v2/admin/db/cypher/quick", data, {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*', 'Authorization': `Bearer ${props.auth.access_token}`}).then(response => {
+        POST("/api/v2/admin/db/cypher/quick", data).then(response => {
             if (response.records.length > 0) {
                 SetRecords(response.records[0])
             }

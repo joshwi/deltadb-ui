@@ -1,13 +1,9 @@
 const { get, POSTY } = require("../utility/REST")
 const types = require("./types")
 
-require('dotenv').config()
-
-const AUTH0_API_CLIENT_ID = process.env.REACT_APP_AUTH0_API_CLIENT_ID
-
 export function updateAuth() {
     return function (dispatch) {
-        return get(`/token/${AUTH0_API_CLIENT_ID}`)
+        return getAccessTokenSilently({audience: `https://joshwi.com:5000`})
             .then(credentials => {
                 dispatch({ type: types.UPDATE_AUTH, credentials: credentials })
             }).catch(error => {

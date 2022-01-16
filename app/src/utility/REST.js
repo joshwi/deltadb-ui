@@ -20,10 +20,6 @@ const POSTY = async function(url, body, headers={'Content-Type': 'application/js
 
 const POST = async function(url, body, headers={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'}){
 
-    let token = localStorage.getItem("api_key")
-
-    headers['Authorization'] = `Bearer ${token}`
-
     let output = await axios({
         url: url,
         method: 'POST',

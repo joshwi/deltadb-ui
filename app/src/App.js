@@ -22,21 +22,14 @@ import "./static/scss/volt.scss";
 
 
 function App(props) {
-  
-  console.log(props)
 
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
     props.actions.loadKeys()
+    props.actions.loadFilters()
     props.actions.initStatus(initState)
   }, [])
-
-  useEffect(() => {
-    if(isAuthenticated && !props.auth.access_token) {
-      props.actions.updateAuth()
-    }
-  }, [isAuthenticated])
 
   return (
     <Router>
@@ -58,16 +51,16 @@ function App(props) {
 }
 
 App.propTypes = {
-  auth: PropTypes.object.isRequired,
   keys: PropTypes.object.isRequired,
+  filters: PropTypes.array.isRequired,
   status: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
     keys: state.keys,
+    filters: state.filters,
     status: state.status
   }
 }

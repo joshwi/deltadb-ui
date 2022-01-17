@@ -37,7 +37,7 @@ function EXPLORER(props) {
             //     return i.properties.label;
             //   });
             props.actions.updatePage("explorer", {...i.properties})
-          };
+        };
 
         d3.select(".d3-graph > *").remove()
         let graph = d3.select(".d3-graph")
@@ -46,32 +46,34 @@ function EXPLORER(props) {
         var layer1 = svg.append('g');
         var layer2 = svg.append('g');
 
+        //Zoom function for explorer view
+        const handleZoom = (e) => svg.attr('transform', e.transform);
+        const zoom = d3.zoom().on('zoom', handleZoom);
+        zoom(svg)
+
         let simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id(d => d.properties.label))
-            .force("charge", d3.forceManyBody().strength(-1000))
-            .force("x", d3.forceX())
-            .force("y", d3.forceY())
-            .on("tick", ticked);
+        .force("link", d3.forceLink(links).id(d => d.properties.label))
+        .force("charge", d3.forceManyBody().strength(-600))
+        .force("x", d3.forceX())
+        .force("y", d3.forceY())
+        .on("tick", ticked);
 
         svg.attr("viewBox", [-width / 2, -height / 2, width, height])
-        svg.append("p").text("Hello from D3");
 
         const node = layer2.append("g")
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 1)
             .selectAll("circle")
             .data(nodes)
             .join("circle")
             .attr("r", 20)
+            .attr("stroke-width", 2)
+            .attr("stroke", function(node){
+                if (node.labels.includes("nfl_teams")) { return node.properties.secondary_color } else { return "#000000" }
+            })
             .attr("fill", function (node) {
-                if (node.labels.includes("nfl_games")) { return "#ce0e0e" } else { return "#283448" }
+                if (node.labels.includes("nfl_teams")) { return node.properties.primary_color } else { return "#333333" }
             })
             .on('mouseover', mouseOver)
-            .on('mouseout', function (d, i) {
-                d3.select(this).transition()
-                    .duration('50')
-                    .attr('opacity', '.85')
-            })
+            // .on('mouseout', function (d, i) {})
             .call(plugins.drag(simulation));
 
         const link = layer1.append("g")
@@ -80,6 +82,7 @@ function EXPLORER(props) {
             .join("line")
             .attr("stroke", "#aaaaaa")
             .attr("stroke-width", 1)
+            .call(plugins.drag(simulation));
 
         const labels = layer2.append("g")
             .attr("class", "texts")
@@ -91,7 +94,9 @@ function EXPLORER(props) {
             .attr("stroke", "white")
             .attr("dx", 0)
             .attr("dy", 0)
+            .call(plugins.drag(simulation));
 
+        
     }
 
     return (<div className="d3-graph" style={{position: "absolute", top: 0, bottom: 0, left: -10, width: "100%"}} />)

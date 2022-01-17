@@ -1,17 +1,9 @@
-const { get, POSTY } = require("../utility/REST")
+const { get } = require("../utility/REST")
 const types = require("./types")
-import { useAuth0 } from "@auth0/auth0-react";
-
-const { getAccessTokenSilently } = useAuth0();
 
 export function updateAuth() {
     return function (dispatch) {
-        return getAccessTokenSilently({audience: `https://joshwi.com:5000`})
-            .then(credentials => {
-                dispatch({ type: types.UPDATE_AUTH, credentials: credentials })
-            }).catch(error => {
-                throw error
-            })
+        return dispatch({ type: types.UPDATE_AUTH })
     }
 }
 
@@ -19,6 +11,16 @@ export function loadKeys() {
     return function (dispatch) {
         return get(`/api/v2/admin/db/keys`).then(keys => {
             dispatch({ type: types.LOAD_KEYS, keys: keys })
+        }).catch(error => {
+            throw error
+        })
+    }
+}
+
+export function loadFilters() {
+    return function (dispatch) {
+        return get(`/api/v2/admin/db/node/filters?fields=node,active,header,name,value`).then(filters => {
+            dispatch({ type: types.LOAD_FILTERS, filters: filters })
         }).catch(error => {
             throw error
         })

@@ -10,10 +10,10 @@ const keyReducer = (state = {}, action) => {
     }
 }
 
-const authReducer = (state = {}, action) => {
+const filterReducer = (state = [], action) => {
     switch (action.type) {
-        case types.UPDATE_AUTH:
-            return { ...state, ...action.credentials }
+        case types.LOAD_FILTERS:
+            return action.filters
         default:
             return state
     }
@@ -41,7 +41,7 @@ const siteReducer = (state = {}, action) => {
 const rootReducer = combineReducers({
     status: siteReducer,
     keys: keyReducer,
-    auth: authReducer
+    filters: filterReducer
 })
 
 export default rootReducer

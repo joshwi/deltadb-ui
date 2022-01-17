@@ -60,7 +60,7 @@ function filterGreaterThan(rows, id, filterValue) {
 
 filterGreaterThan.autoRemove = (val) => typeof val !== 'number';
 
-function App(props) {
+function TableComponent(props) {
 
 	const [data, SetData] = useState([])
 	const [columns, SetColumns] = useState([])
@@ -72,6 +72,7 @@ function App(props) {
 		if (props.headers) {
 			let input = props.headers.filter(x => x.active === true).map((entry, index) => {
 				return {
+					key: index,
 					Header: entry.header,
 					accessor: entry.name,
 					aggregate: entry.name,
@@ -208,8 +209,8 @@ function App(props) {
 								{headerGroups.length > 1 && (
 									<th className="th" {...headerGroups[1].getHeaderGroupProps()}>
 										{headerGroups[1].headers.map((column, index) => (
-											<>
-												<div {...column.getHeaderProps()}>
+											<React.Fragment key={index}>
+												<div key={index} {...column.getHeaderProps()}>
 													<span {...column.getSortByToggleProps()}>
 														{column.render('Header')}
 														{column.isSorted ? (column.isSortedDesc ? <i className="bi bi-chevron-down" style={{ color: "white", margin: "5px" }} /> : <i className="bi bi-chevron-up" style={{ color: "white", margin: "5px" }} />) : ''}
@@ -223,7 +224,7 @@ function App(props) {
 														</div>
 													</div>
 												)}
-											</>
+											</React.Fragment>
 										))}
 									</th>
 								)}
@@ -305,4 +306,4 @@ function App(props) {
 	);
 }
 
-export default App;
+export default TableComponent;

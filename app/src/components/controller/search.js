@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from "react";
-import { Col, Label, InputGroup, InputGroupAddon, InputGroupText, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, Button, FormGroup } from "reactstrap"
+import { Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, FormGroup } from "reactstrap"
 import "../../static/css/main.css"
 
 function FILTER(props) {
@@ -46,23 +46,22 @@ function FILTER(props) {
     useEffect(() => { if (props.node) { SetNode(props.node) } }, [props.node])
 
     useEffect(() => {
-        if (props.keys[node] && props.schema) {
+        if (props.filters && props.keys[node] && props.schema) {
             if (props.keys[node].headers.length === props.keys[node].keys.length) {
                 let temp = props.keys[node].headers.map((entry, index) => { return { header: entry, name: props.keys[node].keys[index], active: false, value: "" } })
                 try {
-                    props.status.pages[`${props.status.params.view}_${props.schema}`].filters.map((entry) => {
+                    props.filters.map((entry) => {
                         temp = temp.map(index => { return entry.name === index.name ? entry : index })
                     })
                 } catch (err) { console.log(err) }
                 SetFilters(temp)
             }
         }
-    }, [props.keys, props.schema, node])
+    }, [props.filters, props.keys, props.schema, node])
 
     useEffect(() => {
         if (props.keys[node] !== undefined) {
             if (props.keys[node].headers.length === props.keys[node].keys.length) {
-
                 let temp = props.keys[node].headers.map((entry, index) => {
                     if (props.keys[node].primary.indexOf(entry) > -1) {
                         return { header: entry, name: props.keys[node].keys[index], active: true }
@@ -93,7 +92,6 @@ function FILTER(props) {
 
     return (
         <>
-        {/* <div className="centeredDiv"> */}
             {filters && filters.filter(x => x.active === true).map((entry, index) => {
                 if (index < 3) {
                     return <Col className="centerDiv" key={index} style={{marginBottom: "10px"}}>

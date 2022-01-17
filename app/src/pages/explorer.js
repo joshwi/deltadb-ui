@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Container, Row, Col } from "reactstrap"
 // import SearchBar from "../components/controller/search"
-import _ from "underscore"
+// import _ from "underscore"
 import D3 from "../components/view/explorer"
 // import Draggable from "react-draggable"
 import { POST } from "../utility/REST"
@@ -9,7 +9,7 @@ import { POST } from "../utility/REST"
 function Explorer(props) {
 
     const [records, SetRecords] = useState({})
-    const [summary, SetSummary] = useState({})
+    // const [summary, SetSummary] = useState({})
 
     useEffect(() => {
         const data = { "cypher": "MATCH p=(a:nfl_teams)-[r:played_in]->(b:nfl_games) WHERE b.week=~'[^\\d]+' AND b.year='2020' RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link" }
@@ -20,13 +20,13 @@ function Explorer(props) {
         })
     }, [])
 
-    useEffect(() => {
-        if(props.keys.nfl_games && props.keys.nfl_games.primary && props.status.pages && props.status.pages.explorer){
-        let primary = props.keys.nfl_games.primary.map(entry => {return entry.replaceAll(" ", "_")})
-        let result = _.pick(props.status.pages.explorer, primary)
-        SetSummary(result)
-        }
-    }, [ props.keys.nfl_games, props.status.pages])
+    // useEffect(() => {
+    //     if(props.keys.nfl_games && props.keys.nfl_games.primary && props.status.pages && props.status.pages.explorer){
+    //     let primary = props.keys.nfl_games.primary.map(entry => {return entry.replaceAll(" ", "_")})
+    //     let result = _.pick(props.status.pages.explorer, primary)
+    //     SetSummary(result)
+    //     }
+    // }, [ props.keys.nfl_games, props.status.pages])
 
     // useEffect(() => {
     //     console.log(records)

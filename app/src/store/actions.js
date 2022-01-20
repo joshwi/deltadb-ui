@@ -27,6 +27,24 @@ export function loadFilters() {
     }
 }
 
+export function setView(key) {
+    return function (dispatch) {
+        return dispatch({ type: types.SET_VIEW, key: key })
+    }
+}
+
+export function setParams(params) {
+    return function (dispatch) {
+        return dispatch({ type: types.SET_PARAMS, params: params })
+    }
+}
+
+export function setPage(key, data) {
+    return function (dispatch) {
+        return dispatch({ type: types.SET_PAGE, key: key, data: data })
+    }
+}
+
 // export function loadColorThemes() {
 //     return function (dispatch) {
 //         return get(`/api/v2/admin/db/node/colors?query=n.tag=~'.*'`).then(teams => {
@@ -67,15 +85,8 @@ export function loadParams(params) {
     }
 }
 
-export function setParams(params) {
-    return function (dispatch) {
-        return dispatch({ type: types.SET_PARAMS, params: params })
-    }
-}
-
 export function toggleSidebar() {
     return function (dispatch) {
         return dispatch({ type: types.TOGGLE_SIDEBAR })
     }
 }
-

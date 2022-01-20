@@ -16,19 +16,20 @@ import Map from "./pages/map"
 import NotFound from "./pages/notFound"
 
 import * as actions from "./store/actions"
-import initState from "./static/json/initialState.json"
 
 import "./static/scss/volt.scss";
 
 
 function App(props) {
 
+  // console.log(props.view, "\t", props.params, "\t", props.pages, "\t", props.db)
+  console.log(props.pages)
+
   const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
     props.actions.loadKeys()
     props.actions.loadFilters()
-    props.actions.initStatus(initState)
   }, [])
 
   return (
@@ -38,6 +39,7 @@ function App(props) {
             <main className="content">
               <Switch>
                 <Route path="/" exact component={Home} />
+                {/* <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} /> */}
                 <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} />
                 <Route path={"/chart/:schema"} exact render={() => <Chart {...props} />} />
                 <Route path={"/explorer/"} exact render={() => <Explorer {...props} />} />
@@ -51,17 +53,19 @@ function App(props) {
 }
 
 App.propTypes = {
-  keys: PropTypes.object.isRequired,
-  filters: PropTypes.array.isRequired,
-  status: PropTypes.object.isRequired,
+  view: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  pages: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
   return {
-    keys: state.keys,
-    filters: state.filters,
-    status: state.status
+    view: state.view,
+    params: state.params,
+    pages: state.pages,
+    db: state.db
   }
 }
 

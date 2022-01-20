@@ -21,12 +21,12 @@ function Explorer(props) {
     }, [])
 
     // useEffect(() => {
-    //     if(props.keys.nfl_games && props.keys.nfl_games.primary && props.status.pages && props.status.pages.explorer){
-    //     let primary = props.keys.nfl_games.primary.map(entry => {return entry.replaceAll(" ", "_")})
-    //     let result = _.pick(props.status.pages.explorer, primary)
+    //     if(props.db.keys.nfl_games && props.db.keys.nfl_games.primary && props.pages.explorer && props.pages.explorer.data){
+    //     let primary = props.db.keys.nfl_games.primary.map(entry => {return entry.replaceAll(" ", "_")})
+    //     let result = _.pick(props.pages.explorer.data, primary)
     //     SetSummary(result)
     //     }
-    // }, [ props.keys.nfl_games, props.status.pages])
+    // }, [ props.db.keys.nfl_games, props.pages])
 
     // useEffect(() => {
     //     console.log(records)
@@ -35,7 +35,6 @@ function Explorer(props) {
     return (
         <Container fluid={true} style={{ marginTop: "75px" }}>
             <Row>
-                {/* <SearchBar node={node} schema={schema} {...props} /> */}
                 {/* <Draggable
                     axis="both"
                     handle=".handle"

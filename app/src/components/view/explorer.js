@@ -36,7 +36,7 @@ function EXPLORER(props) {
             //   .text(function() {
             //     return i.properties.label;
             //   });
-            props.actions.updatePage("explorer", {...i.properties})
+            // props.actions.setPage("explorer", {...props.pages.explorer, data: {...i.properties}})
         };
 
         d3.select(".d3-graph > *").remove()

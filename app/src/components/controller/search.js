@@ -1,21 +1,33 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from "react";
+import {useSelector} from "react-redux"
 import { Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, FormGroup } from "reactstrap"
+import * as actions from "../../store/actions"
 import "../../static/css/main.css"
 
-function FILTER(props) {
+function TableSearch(props) {
 
-    const [visible, SetVisible] = useState({"filters": false, "headers": false})
+    const [visible, SetVisible] = useState({ "filters": false, "headers": false })
 
-    const [node, SetNode] = useState("")
+    const db = useSelector(state => state.db);
+    const params = useSelector(state => state.params);
+    const page = useSelector(state => state.pages[`table_${params.category}_${params.node}`]);
+
+    const [name, SetName] = useState(`table_${params.category}_${params.node}`)
     const [filters, SetFilters] = useState([])
-    const [headers, SetHeaders] = useState([])
     const [search, SetSearch] = useState(false)
 
+    useEffect(() => {
+        if(params.view && params.category && params.node){
+            SetName(`${params.view}_${params.category}_${params.node}`)
+        }
+    }, [params])
 
     function submit(key) {
         if (key === "Enter") {
-            try { props.actions.updatePage(`${props.status.params.view}_${props.schema}`, { search: search }) }
+            try {
+                props.actions.setPage(name, { search: search })
+            }
             catch (err) { console.log(err) }
             SetSearch(true)
         }
@@ -43,48 +55,41 @@ function FILTER(props) {
         return output
     }
 
-    useEffect(() => { if (props.node) { SetNode(props.node) } }, [props.node])
-
     useEffect(() => {
-        if (props.filters && props.keys[node] && props.schema) {
-            if (props.keys[node].headers.length === props.keys[node].keys.length) {
-                let temp = props.keys[node].headers.map((entry, index) => { return { header: entry, name: props.keys[node].keys[index], active: false, value: "" } })
+        if (db.filters && db.keys[`${params.category}_${params.node}`]) {
+            if (db.keys[`${params.category}_${params.node}`].headers.length === db.keys[`${params.category}_${params.node}`].keys.length) {
+                let temp = db.keys[`${params.category}_${params.node}`].headers.map((entry, index) => { return { header: entry, name: db.keys[`${params.category}_${params.node}`].keys[index], active: false, value: "" } })
                 try {
-                    props.filters.map((entry) => {
+                    db.filters.map((entry) => {
                         temp = temp.map(index => { return entry.name === index.name ? entry : index })
                     })
                 } catch (err) { console.log(err) }
+                props.actions.setPage(name, { filters: temp })
                 SetFilters(temp)
             }
         }
-    }, [props.filters, props.keys, props.schema, node])
+    }, [db.filters, db.keys, params])
 
     useEffect(() => {
-        if (props.keys[node] !== undefined) {
-            if (props.keys[node].headers.length === props.keys[node].keys.length) {
-                let temp = props.keys[node].headers.map((entry, index) => {
-                    if (props.keys[node].primary.indexOf(entry) > -1) {
-                        return { header: entry, name: props.keys[node].keys[index], active: true }
+        if (db.keys[`${params.category}_${params.node}`] !== undefined) {
+            if (db.keys[`${params.category}_${params.node}`].headers.length === db.keys[`${params.category}_${params.node}`].keys.length) {
+                let temp = db.keys[`${params.category}_${params.node}`].headers.map((entry, index) => {
+                    if (db.keys[`${params.category}_${params.node}`].primary.indexOf(entry) > -1) {
+                        return { header: entry, name: db.keys[`${params.category}_${params.node}`].keys[index], active: true }
                     } else {
-                        return { header: entry, name: props.keys[node].keys[index], active: false }
+                        return { header: entry, name: db.keys[`${params.category}_${params.node}`].keys[index], active: false }
                     }
                 })
-                SetHeaders(temp)
+                props.actions.setPage(name, { headers: temp })
             }
         }
-    }, [props.keys, node])
+    }, [db.keys, params])
 
     useEffect(() => {
-        if (headers && headers.length > 0 && props.schema) {
+        if (search && page.filters && page.filters.length > 0) {
             try {
-                props.actions.updatePage(`${props.status.params.view}_${props.schema}`, { headers: headers })
-            } catch (err) { console.log(err) }
-        }
-    }, [headers])
-
-    useEffect(() => {
-        if (search && filters && filters.length > 0) {
-            try { props.actions.updatePage(`${props.status.params.view}_${props.schema}`, { filters: filters }) }
+                props.actions.setPage(name, { filters: page.filters })
+            }
             catch (err) { console.log(err) }
             SetSearch(false)
         }
@@ -94,10 +99,10 @@ function FILTER(props) {
         <>
             {filters && filters.filter(x => x.active === true).map((entry, index) => {
                 if (index < 3) {
-                    return <Col className="centerDiv" key={index} style={{marginBottom: "10px"}}>
+                    return <Col className="centerDiv" key={index} style={{ marginBottom: "10px" }}>
                         <FormGroup>
                             <Label style={{ color: "white" }}>{entry.header.toUpperCase()}</Label>
-                            <Input style={{backgroundColor: "#283448", color: "white"}} placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
+                            <Input style={{ backgroundColor: "#283448", color: "white" }} placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
                         </FormGroup>
                     </Col>
                 }
@@ -106,10 +111,10 @@ function FILTER(props) {
             }
             {filters && (
                 <Col className="centerDiv">
-                    <button type="button" className="btn" style={{border: "none", backgroundColor: "#ce0e0e"}} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
+                    <button type="button" className="btn" style={{ border: "none", backgroundColor: "#ce0e0e" }} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
                     <span style={{ margin: "10px" }}></span>
-                    <Dropdown isOpen={visible.filters} toggle={() => SetVisible({...visible, filters: !visible.filters})}>
-                        <DropdownToggle caret style={{border: "none", backgroundColor: "#ce0e0e", color: "white"}}>Filters</DropdownToggle>
+                    <Dropdown isOpen={visible.filters} toggle={() => SetVisible({ ...visible, filters: !visible.filters })}>
+                        <DropdownToggle caret style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}>Filters</DropdownToggle>
                         <DropdownMenu>
                             {filters.sort().map((entry, index) => {
                                 return <DropdownItem key={index}>
@@ -122,13 +127,13 @@ function FILTER(props) {
                         </DropdownMenu>
                     </Dropdown>
                     <span style={{ margin: "10px" }}></span>
-                    <Dropdown isOpen={visible.headers} toggle={() => SetVisible({...visible, headers: !visible.headers})}>
-                        <DropdownToggle caret style={{border: "none", backgroundColor: "#ce0e0e", color: "white"}}>Headers</DropdownToggle>
+                    <Dropdown isOpen={visible.headers} toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
+                        <DropdownToggle caret style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}>Headers</DropdownToggle>
                         <DropdownMenu>
-                            {headers.sort().map((entry, index) => {
+                            {page && page.headers && page.headers.sort().map((entry, index) => {
                                 return <DropdownItem key={index}>
-                                    <Label style={{ marginLeft: "5px" }} onClick={() => SetHeaders(update(headers, entry.name))} check>
-                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => SetHeaders(update(headers, entry.name))} />{' '}
+                                    <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setPage(name,update(page.headers, entry.name))} check>
+                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => props.actions.setPage(name,update(page.headers, entry.name))} />{' '}
                                         {entry.header}
                                     </Label>
                                 </DropdownItem>
@@ -142,4 +147,4 @@ function FILTER(props) {
     )
 }
 
-export default FILTER
+export default TableSearch

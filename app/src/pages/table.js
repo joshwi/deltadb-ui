@@ -1,83 +1,60 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Spinner } from "reactstrap"
+import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
 import Table from "../components/view/table"
 import { get } from "../utility/REST";
 import SearchBar from "../components/controller/search"
-import Parameters from "../components/controller/parameters"
+// import Parameters from "../components/controller/parameters"
 import "../static/css/main.css"
 
-function Component(props) {
+function TablePage(props) {
 
     const { category, node } = useParams()
 
-    const [nodename, SetNodeName] = useState("nfl_games")
-    const [query, SetQuery] = useState("")
-
-    const [filters, SetFilters] = useState([])
-    const [headers, SetHeaders] = useState([])
-    const [data, SetData] = useState([])
-
-    const [search, SetSearch] = useState(false)
-
-    useEffect(() => { SetNodeName(`${category}_${node}`) }, [category, node])
+    const params = useSelector(state => state.params);
+    const page = useSelector(state => state.pages[`table_${params.category}_${params.node}`]);
 
     useEffect(() => {
-        if (props.status && props.status.params && props.status.pages) {
-            try {
-                SetHeaders(props.status.pages[`table_${nodename}`].headers ? props.status.pages[`table_${nodename}`].headers : [])
-                SetFilters(props.status.pages[`table_${nodename}`].filters ? props.status.pages[`table_${nodename}`].filters : [])
-                SetSearch(props.status.pages[`table_${nodename}`].search ? props.status.pages[`table_${nodename}`].search : !search)
-                SetData(props.status.pages[`table_${nodename}`].data ? props.status.pages[`table_${nodename}`].data : [])
-            } catch (err) { console.log(err) }
+        if(category && node){
+            props.actions.setParams({category: category, node: node})
         }
-    }, [props.status.params, props.status.pages, nodename])
+    }, [category, node])
 
     useEffect(() => {
-        if (nodename.length > 0) {
-            let url = new URL(`${window.location.origin}/api/v2/admin/db/node/${nodename}`)
+        if (params.category && params.node && page && page.headers && page.headers.length > 0 && page.headers.length == page.filters.length && !page.data) {
+            let url = new URL(`${window.location.origin}/api/v2/admin/db/node/${params.category}_${params.node}`)
 
             let cypher = ``
-            filters.filter(x => x.active === true).map((entry, index) => {
-                if (index === 0) {
-                    cypher += `n.${entry.name}=~\"(?i)${entry.value}.*\"`
-                } else {
-                    cypher += `AND n.${entry.name}=~\"(?i)${entry.value}.*\"`
+            page.filters.filter(x => x.active === true).map((entry, index) => { index == 0 ? cypher += `n.${entry.name}=~\"(?i).*${entry.value}.*\"` : cypher += `AND n.${entry.name}=~\"(?i).*${entry.value}.*\"` })
+
+            let parameters = { filter: cypher }
+            Object.keys(parameters).forEach(key => url.searchParams.append(key, parameters[key]))
+
+            if (cypher !== page.query) {
+                get(url).then(result => {
+                    if (result.length > 0) {
+                        props.actions.setPage(`table_${params.category}_${params.node}`, { headers: page.headers, filters: page.filters, search: page.search, query: cypher, data: result })
+                    }
                 }
-            })
-            SetQuery(cypher)
-
-            let params = { filter: cypher }
-            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-
-            if (filters.length > 0 && cypher !== props.status.pages[`table_${nodename}`].query) {
-                get(url).then(result => SetData(result))
-            }
+            )}
         }
-    }, [nodename, search])
-
-    useEffect(() => {
-        if (data.length > 0) {
-            props.actions.updatePage(`table_${nodename}`, { headers: headers, filters: filters, search: search, query: query, data: data })
-        }
-    }, [data])
+    }, [params, page, category, node])
 
     return (
         <div style={{ marginTop: "1rem" }}>
-            <Parameters />
-            <span style={{ margin: "2rem" }} />
             <Row>
-                <SearchBar node={nodename} schema={nodename} {...props} />
+                <SearchBar {...props} />
             </Row>
             <span style={{ margin: "2rem" }} />
             <Row>
                 <Col className="centerDiv">
-                    {data.length > 0 && <Table headers={headers} data={data} {...props} />}
+                    {page && page.data && page.data.length > 0 && <Table headers={page.headers} data={page.data ? page.data : []} {...props} />}
                 </Col>
             </Row>
         </div>
     )
 }
 
-export default Component
+export default TablePage

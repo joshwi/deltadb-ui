@@ -14,7 +14,7 @@ function MAP(props) {
     
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const [lng, SetLng] = useState(-110);
+    const [lng, SetLng] = useState(-90);
     const [lat, SetLat] = useState(40);
     const [zoom, SetZoom] = useState(3);
 
@@ -37,12 +37,14 @@ function MAP(props) {
         });
     });
 
+
+
     return (
         <div>
-            <div style={{backgroundColor: "#283448", color: "#fff", padding: "6px 12px", fontFamily: "monospace", zIndex: 1, position: "absolute", top: 0, right: 5, margin: "12px", borderRadius: "4px"}}>
+            <div style={{backgroundColor: "#283448", color: "#fff", padding: "6px 12px", fontFamily: "monospace", zIndex: 1, position: "relative", top: 0, right: 0, margin: "12px", borderRadius: "4px"}}>
                 Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
             </div>
-            <div ref={mapContainer} className="map-container" style={{position: "absolute", top: 0, bottom: 0, left: -10, width: "100%"}} />
+            <div ref={mapContainer} className="map-container" style={{height: window.innerHeight, width: window.innerWidth}} />
         </div>
     );
 

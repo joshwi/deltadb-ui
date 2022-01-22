@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { Container, Row, Col } from "reactstrap"
-// import SearchBar from "../components/controller/search"
-// import _ from "underscore"
-import D3 from "../components/view/explorer"
+import { Container, Row } from "reactstrap"
 // import Draggable from "react-draggable"
+// import _ from "underscore"
+
+// import SearchBar from "../components/controller/search"
+import D3 from "../components/view/explorer"
+
 import { POST } from "../utility/REST"
 
 function Explorer(props) {
@@ -33,7 +35,7 @@ function Explorer(props) {
     // }, [records])
 
     return (
-        <Container fluid={true} style={{ marginTop: "75px" }}>
+        <Container fluid={true}>
             <Row>
                 {/* <Draggable
                     axis="both"
@@ -49,11 +51,7 @@ function Explorer(props) {
                 </Container>
                 </Draggable> */}
             </Row>
-            <Row style={{ margin: "10px" }}>
-                <Col className="centerDiv">
-                    <Col><D3 records={records} {...props} /></Col>
-                </Col>
-            </Row>
+            <D3 records={records} {...props} />
         </Container>
     )
 }

@@ -5,8 +5,8 @@ import plugins from "../../utility/D3/plugins"
 
 function EXPLORER(props) {
 
-    const height = 900
-    const width = 1500
+    const height = window.innerHeight;
+    const width = window.innerWidth;
 
     useEffect(() => {
         if (props.records.source && props.records.target && props.records.link) {
@@ -42,14 +42,20 @@ function EXPLORER(props) {
         d3.select(".d3-graph > *").remove()
         let graph = d3.select(".d3-graph")
         let svg = graph.append("svg")
+        svg.append("g")
 
-        var layer1 = svg.append('g');
-        var layer2 = svg.append('g');
+        // var layer1 = svg.append('g');
+        // var layer2 = svg.append('g');
 
         //Zoom function for explorer view
-        const handleZoom = (e) => svg.attr('transform', e.transform);
+        // const handleZoom = (e) => svg.attr('transform', e.transform);
+        function handleZoom(e) {
+            d3.select('svg g').attr('transform', e.transform);
+          }
         const zoom = d3.zoom().on('zoom', handleZoom);
-        zoom(svg)
+        // zoom(svg)
+        d3.select('svg')
+        .call(zoom);
 
         let simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.properties.label))
@@ -60,7 +66,7 @@ function EXPLORER(props) {
 
         svg.attr("viewBox", [-width / 2, -height / 2, width, height])
 
-        const node = layer2.append("g")
+        const node = d3.select('svg g')
             .selectAll("circle")
             .data(nodes)
             .join("circle")
@@ -76,7 +82,7 @@ function EXPLORER(props) {
             // .on('mouseout', function (d, i) {})
             .call(plugins.drag(simulation));
 
-        const link = layer1.append("g")
+        const link = d3.select('svg g')
             .selectAll("line")
             .data(links)
             .join("line")
@@ -84,7 +90,7 @@ function EXPLORER(props) {
             .attr("stroke-width", 1)
             .call(plugins.drag(simulation));
 
-        const labels = layer2.append("g")
+        const labels = d3.select('svg g')
             .attr("class", "texts")
             .selectAll("text")
             .data(nodes)
@@ -99,7 +105,7 @@ function EXPLORER(props) {
         
     }
 
-    return (<div className="d3-graph" style={{position: "absolute", top: 0, bottom: 0, left: -10, width: "100%"}} />)
+    return (<div className="d3-graph" style={{ width: "100%"}} />)
 }
 
 export default EXPLORER;

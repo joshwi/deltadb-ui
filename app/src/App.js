@@ -39,7 +39,6 @@ function App(props) {
             <main className="content">
               <Switch>
                 <Route path="/" exact component={Home} />
-                {/* <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} /> */}
                 <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} />
                 <Route path={"/chart/:schema"} exact render={() => <Chart {...props} />} />
                 <Route path={"/explorer/"} exact render={() => <Explorer {...props} />} />

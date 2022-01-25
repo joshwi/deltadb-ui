@@ -129,11 +129,11 @@ function TableSearch(props) {
                     <span style={{ margin: "10px" }}></span>
                     <Dropdown isOpen={visible.headers} toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
                         <DropdownToggle caret style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}>Headers</DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu children={true}>
                             {page && page.headers && page.headers.sort().map((entry, index) => {
                                 return <DropdownItem key={index}>
-                                    <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setPage(name,update(page.headers, entry.name))} check>
-                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => props.actions.setPage(name,update(page.headers, entry.name))} />{' '}
+                                    <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setPage(name,{headers: update(page.headers, entry.name)})} check>
+                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => props.actions.setPage(name,{headers: update(page.headers, entry.name)})} />{' '}
                                         {entry.header}
                                     </Label>
                                 </DropdownItem>

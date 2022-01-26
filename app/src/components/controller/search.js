@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {useSelector} from "react-redux"
 import { Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, FormGroup } from "reactstrap"
-import * as actions from "../../store/actions"
-import "../../static/css/main.css"
+// import * as actions from "../../store/actions"
 
 function TableSearch(props) {
 
@@ -102,7 +101,7 @@ function TableSearch(props) {
                     return <Col className="centerDiv" key={index} style={{ marginBottom: "10px" }}>
                         <FormGroup>
                             <Label style={{ color: "white" }}>{entry.header.toUpperCase()}</Label>
-                            <Input style={{ backgroundColor: "#283448", color: "white" }} placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
+                            <Input id="primaryColor" placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
                         </FormGroup>
                     </Col>
                 }
@@ -111,10 +110,10 @@ function TableSearch(props) {
             }
             {filters && (
                 <Col className="centerDiv">
-                    <button type="button" className="btn" style={{ border: "none", backgroundColor: "#ce0e0e" }} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
+                    <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
                     <span style={{ margin: "10px" }}></span>
                     <Dropdown isOpen={visible.filters} toggle={() => SetVisible({ ...visible, filters: !visible.filters })}>
-                        <DropdownToggle caret style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}>Filters</DropdownToggle>
+                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}>Filters</DropdownToggle>
                         <DropdownMenu>
                             {filters.sort().map((entry, index) => {
                                 return <DropdownItem key={index}>
@@ -128,7 +127,7 @@ function TableSearch(props) {
                     </Dropdown>
                     <span style={{ margin: "10px" }}></span>
                     <Dropdown isOpen={visible.headers} toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
-                        <DropdownToggle caret style={{ border: "none", backgroundColor: "#ce0e0e", color: "white" }}>Headers</DropdownToggle>
+                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}>Headers</DropdownToggle>
                         <DropdownMenu children={true}>
                             {page && page.headers && page.headers.sort().map((entry, index) => {
                                 return <DropdownItem key={index}>

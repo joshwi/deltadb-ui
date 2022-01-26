@@ -36,7 +36,7 @@ function App(props) {
     <Router>
           <Sidebar {...props} />
           {isAuthenticated && (
-            <main className="content">
+            <main className="content" style={{padding: "2rem"}}>
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} />

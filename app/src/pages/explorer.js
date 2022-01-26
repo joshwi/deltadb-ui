@@ -45,7 +45,7 @@ function Explorer(props) {
                     grid={[25, 25]}
                     scale={1}
                 >
-                <Container className="table handle" style={{position: "absolute", top: 5, left: 350, width: "300px", color: "white", backgroundColor: "#283448" }}>
+                <Container className="table handle" id="primaryColor" style={{position: "absolute", top: 5, left: 350, width: "300px" }}>
                     <tr><th>Key</th><th>Value</th></tr>
                     {Object.keys(summary).map(entry => {return <tr><td>{entry.replaceAll("_", " ")}</td><td>{summary[entry]}</td></tr>})}
                 </Container>

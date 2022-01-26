@@ -15,26 +15,26 @@
 
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800&display=swap');
 
-// Bootstrap mixins and functions
+// // Bootstrap mixins and functions
 @import "../../../node_modules/bootstrap/scss/mixins";
 @import "../../../node_modules/bootstrap/scss/functions";
 
-// Change variables here
+// // Change variables here
 @import "volt/variables";
 
-// Bootstrap
+// // Bootstrap
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
-// Vendor
-@import "volt/vendor";
+// // // Vendor
+// @import "volt/vendor";
 
-// volt mixins & functions
+// // volt mixins & functions
 @import "volt/mixins";
-@import "volt/functions";
+// @import "volt/functions";
 
-// Utilities
-@import "volt/reboot";
-@import "volt/utilities";
+// // // Utilities
+// @import "volt/reboot";
+// @import "volt/utilities";
 
 // Layout
 @import "volt/layout";
@@ -43,3 +43,35 @@
 @import "volt/components";
 
 // write your custom styles here!
+
+$primary-color:#283448 !important;
+$secondary-color:#ce0e0e !important;
+$text-color: #ffffff !important;
+
+.table {
+  font-size: 0.75rem;
+  border: 1px solid #454d55;
+  border-radius: 10px;
+}
+
+.centerDiv {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: inherit
+}
+
+#primaryColor{
+  background-color: $primary-color;
+  color: $text-color;
+}
+
+#secondaryColor{
+  background-color: $secondary-color;
+  color: $text-color;
+}
+
+#secondaryColorText{
+  color: $secondary-color;
+}

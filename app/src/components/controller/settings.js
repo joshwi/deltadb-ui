@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 
 const Settings = (props) => {
 
-    const closeBtn = <button className="close" onClick={props.actions.updateCategory("view", {settings: false})}><i className="bi bi-x-lg" style={{ color: "#ce0e0e" }}></i></button>;
+    const closeBtn = <button className="close" onClick={props.actions.updateCategory("view", {settings: false})}><i className="bi bi-x-lg" id="secondaryColor"></i></button>;
 
     return (
         <div>

@@ -15,8 +15,6 @@ import {
 	useBlockLayout,
 	useResizeColumns,
 } from 'react-table';
-import "../../static/css/bootstrap.min.css"
-import "../../static/css/main.css"
 
 // Define a default UI for filtering
 function DefaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter } }) {
@@ -25,7 +23,8 @@ function DefaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter
 	return (
 		<input
 			className="form-control"
-			style={{ height: '1.5rem', marginLeft: "10%", width: "80%", backgroundColor: "#283448", color: "white" }}
+			id="primaryColor"
+			style={{ height: '1.5rem', marginLeft: "10%", width: "80%"}}
 			value={filterValue || ''}
 			onChange={(e) => {
 				setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
@@ -41,7 +40,8 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 	return (
 		<input
 			className="form-control"
-			style={{ height: '2rem', margin: '10px', backgroundColor: "#283448", color: "white" }}
+			id="primaryColor"
+			style={{ height: '2rem', margin: '10px' }}
 			value={globalFilter || ''}
 			onChange={(e) => {
 				setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
@@ -186,7 +186,7 @@ function TableComponent(props) {
 
 	// Render the UI for your table
 	return (
-		<Container fluid className="table" style={{ color: "white", backgroundColor: "#283448" }}>
+		<Container fluid className="table" id="primaryColor">
 			<Row style={{ height: '50px', overflowX: "visible", overflowY: "hidden" }}>
 				<Col xs="9">
 					<GlobalFilter
@@ -197,13 +197,13 @@ function TableComponent(props) {
 				</Col>
 				<Col xs="1" style={{ height: '2rem', margin: '12px' }}>
 					<CSVLink filename={'deltadb.csv'} data={prepareData(props.headers, data)} style={{backgroundColor: "transparent"}}>
-					<button type="button" className="btn btn-sm" style={{ border: "transparent", backgroundColor: "#ce0e0e", color: "white" }}><span>Export</span></button>
+					<button type="button" className="btn btn-sm" id="secondaryColor" style={{ border: "transparent" }}><span>Export</span></button>
 					</CSVLink>
 				</Col>
 			</Row>
 			<Row style={{ border: "none", overflowX: "visible", overflowY: "hidden" }}>
 				<Col>
-					<table style={{ border: "none", backgroundColor: "#283448" }} {...getTableProps()}>
+					<table id="primaryColor" style={{ border: "none" }} {...getTableProps()}>
 						<thead>
 							<tr>
 								{headerGroups.length > 1 && (
@@ -220,7 +220,7 @@ function TableComponent(props) {
 												{column.resize && (
 													<div className="parent" style={{ minHeight: "50px" }}>
 														<div className="child">
-															<i className="bi bi-grip-vertical" {...column.getResizerProps({ style: { color: "#ce0e0e", fontSize: "1.25rem" } })} />
+															<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />
 														</div>
 													</div>
 												)}
@@ -279,7 +279,7 @@ function TableComponent(props) {
 								{pageIndex - 1 >= 0 && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex - 1)} disabled={!canPreviousPage}>
 									{pageIndex}
 								</button>)}
-								<button className="btn btn-default" style={{ color: "#ce0e0e" }} disabled={true}>
+								<button className="btn btn-default" id="secondaryColorText" disabled={true}>
 									{pageIndex + 1}
 								</button>
 								{pageIndex + 1 < pageOptions.length && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex + 1)} disabled={!canNextPage}>

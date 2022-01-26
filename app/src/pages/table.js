@@ -1,13 +1,11 @@
 /*eslint-disable*/
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Spinner } from "reactstrap"
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
 import Table from "../components/view/table"
 import { get } from "../utility/REST";
 import SearchBar from "../components/controller/search"
 // import Parameters from "../components/controller/parameters"
-import "../static/css/main.css"
 
 function TablePage(props) {
 
@@ -17,8 +15,8 @@ function TablePage(props) {
     const page = useSelector(state => state.pages[`table_${params.category}_${params.node}`]);
 
     useEffect(() => {
-        if(category && node){
-            props.actions.setParams({category: category, node: node})
+        if (category && node) {
+            props.actions.setParams({ category: category, node: node })
         }
     }, [category, node])
 
@@ -32,27 +30,21 @@ function TablePage(props) {
             let parameters = { filter: cypher }
             Object.keys(parameters).forEach(key => url.searchParams.append(key, parameters[key]))
 
-            if (cypher !== page.query) {
+            if (cypher !== page.query && page.filters.length > 0) {
                 get(url).then(result => {
                     if (result.length > 0) {
                         props.actions.setPage(`table_${params.category}_${params.node}`, { headers: page.headers, filters: page.filters, search: page.search, query: cypher, data: result })
                     }
                 }
-            )}
+                )
+            }
         }
     }, [params, page, category, node])
 
     return (
-        <div style={{ marginTop: "1rem" }}>
-            <Row>
-                <SearchBar {...props} />
-            </Row>
-            <span style={{ margin: "2rem" }} />
-            <Row>
-                <Col className="centerDiv">
-                    {page && page.data && page.data.length > 0 && <Table headers={page.headers} data={page.data ? page.data : []} {...props} />}
-                </Col>
-            </Row>
+        <div className="justify-content-md-center row">
+            <SearchBar {...props} />
+            {page && page.data && page.data.length > 0 && <Table headers={page.headers} data={page.data ? page.data : []} {...props} />}
         </div>
     )
 }

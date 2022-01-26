@@ -44,6 +44,7 @@ function TablePage(props) {
     return (
         <div className="justify-content-md-center row">
             <SearchBar {...props} />
+            <span style={{margin: "1rem"}} />
             {page && page.data && page.data.length > 0 && <Table headers={page.headers} data={page.data ? page.data : []} {...props} />}
         </div>
     )

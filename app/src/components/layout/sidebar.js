@@ -35,7 +35,7 @@ export default (props) => {
 
   return (
     <>
-      <Navbar expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-md-none">
+      <Navbar expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-md-none" style={{zIndex: 10}}>
         <Navbar.Brand className="me-lg-5" >
           <i className="bi bi-server" id="secondaryColorText" />
         </Navbar.Brand>
@@ -70,7 +70,6 @@ export default (props) => {
                 <Link to={"/"} id="secondaryColorText" style={{ border: "transparent", backgroundColor: "transparent", fontSize: "1.5rem", textDecoration: "none" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></Link>
               </button>
               <Dropdown.Divider className="my-3 border-indigo" />
-              {/* {tabs(props.params).map(entry => {console.log(entry)})} */}
               <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
                 <Link style={{ textDecoration: 'none' }} to={`/table/${props.params.category ? props.params.category : "nfl"}/${props.params.node ? props.params.node : "games"}`}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
               </button>

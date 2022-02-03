@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from "react";
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux"
+import { CSVLink } from 'react-csv';
 import { Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, FormGroup } from "reactstrap"
 // import * as actions from "../../store/actions"
 
@@ -17,7 +18,7 @@ function TableSearch(props) {
     const [search, SetSearch] = useState(false)
 
     useEffect(() => {
-        if(params.view && params.category && params.node){
+        if (params.view && params.category && params.node) {
             SetName(`${params.view}_${params.category}_${params.node}`)
         }
     }, [params])
@@ -85,9 +86,9 @@ function TableSearch(props) {
     }, [db.keys, params])
 
     useEffect(() => {
-        if (search && page.filters && page.filters.length > 0) {
+        if (search && filters && filters.length > 0) {
             try {
-                props.actions.setPage(name, { filters: page.filters })
+                props.actions.setPage(name, { filters: filters })
             }
             catch (err) { console.log(err) }
             SetSearch(false)
@@ -112,6 +113,10 @@ function TableSearch(props) {
                 <Col className="centerDiv">
                     <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => SetSearch(!search)}><i className="bi bi-search" style={{ color: "white" }} /></button>
                     <span style={{ margin: "10px" }}></span>
+                    <CSVLink filename={'deltadb.csv'} data={page && page.csv ? page.csv : []} style={{ backgroundColor: "transparent" }}>
+                        <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }}><i className="bi bi-filetype-csv" style={{ color: "white" }} /></button>
+                    </CSVLink>
+                    <span style={{ margin: "10px" }}></span>
                     <Dropdown isOpen={visible.filters} toggle={() => SetVisible({ ...visible, filters: !visible.filters })}>
                         <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}>Filters</DropdownToggle>
                         <DropdownMenu>
@@ -131,8 +136,8 @@ function TableSearch(props) {
                         <DropdownMenu children={true}>
                             {page && page.headers && page.headers.sort().map((entry, index) => {
                                 return <DropdownItem key={index}>
-                                    <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setPage(name,{headers: update(page.headers, entry.name)})} check>
-                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => props.actions.setPage(name,{headers: update(page.headers, entry.name)})} />{' '}
+                                    <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setPage(name, { headers: update(page.headers, entry.name) })} check>
+                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => props.actions.setPage(name, { headers: update(page.headers, entry.name) })} />{' '}
                                         {entry.header}
                                     </Label>
                                 </DropdownItem>

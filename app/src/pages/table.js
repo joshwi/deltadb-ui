@@ -21,7 +21,8 @@ function TablePage(props) {
     }, [category, node])
 
     useEffect(() => {
-        if (params.category && params.node && page && page.headers && page.headers.length > 0 && page.headers.length == page.filters.length && !page.data) {
+        if (params.category && params.node && page && page.headers && page.headers.length > 0 && page.headers.length == page.filters.length) {
+
             let url = new URL(`${window.location.origin}/api/v2/admin/db/node/${params.category}_${params.node}`)
 
             let cypher = ``
@@ -35,8 +36,7 @@ function TablePage(props) {
                     if (result.length > 0) {
                         props.actions.setPage(`table_${params.category}_${params.node}`, { headers: page.headers, filters: page.filters, search: page.search, query: cypher, data: result })
                     }
-                }
-                )
+                })
             }
         }
     }, [params, page, category, node])

@@ -40,12 +40,12 @@ function MAP(props) {
 
 
     return (
-        <div>
+        <>
             <div id="primaryColor" style={{ padding: "6px 12px", fontFamily: "monospace", zIndex: 1, position: "relative", top: 0, right: 0, margin: "12px", borderRadius: "4px"}}>
                 Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
             </div>
-            <div ref={mapContainer} className="map-container" style={{height: window.innerHeight, width: window.innerWidth}} />
-        </div>
+            <div ref={mapContainer} id="mapbox" />
+        </>
     );
 
 }

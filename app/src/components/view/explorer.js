@@ -105,7 +105,7 @@ function EXPLORER(props) {
         
     }
 
-    return (<div className="d3-graph" style={{ width: "100%"}} />)
+    return (<div className="d3-graph" id="mapbox" style={{ width: "100%"}} />)
 }
 
 export default EXPLORER;

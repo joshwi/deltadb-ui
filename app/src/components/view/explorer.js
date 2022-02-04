@@ -23,6 +23,8 @@ function EXPLORER(props) {
         // Runs each iteration of force algorithm, updating positions of nodes
         function ticked() {
             node.attr("cx", d => d.x).attr("cy", d => d.y);
+            // node.attr('x', function (d) { return d.x }).attr('y', function (d) { return d.y });
+            images.attr('x', function (d) { return d.x }).attr('y', function (d) { return d.y });
             link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
             labels.attr('x', function (d) { return d.x }).attr('y', function (d) { return d.y });
         };
@@ -66,9 +68,17 @@ function EXPLORER(props) {
 
         svg.attr("viewBox", [-width / 2, -height / 2, width, height])
 
-        const node = d3.select('svg g')
-            .selectAll("circle")
-            .data(nodes)
+        const link = d3.select('svg g')
+            .selectAll("line")
+            .data(links)
+            .join("line")
+            .attr("stroke", "#aaaaaa")
+            .attr("stroke-width", 1)
+            .call(plugins.drag(simulation));
+
+        const node = d3.select('svg g') 
+            .selectAll("node")
+            .data(nodes.filter(x => x.labels && x.labels.includes("nfl_games")))
             .join("circle")
             .attr("r", 20)
             .attr("stroke-width", 2)
@@ -78,16 +88,14 @@ function EXPLORER(props) {
             .attr("fill", function (node) {
                 if (node.labels.includes("nfl_teams")) { return node.properties.primary_color } else { return "#333333" }
             })
-            .on('mouseover', mouseOver)
+            // .enter().append("svg:image")
+            // .join("svg:image")
+            // .attr("xlink:href", function(node){ if(node.properties && node.properties.logo_url) { return node.properties.logo_url } else { return "" } })
+            // .attr("width", 50)
+            // .attr("height", 50)
+            // .style("transform", "translate(-25px, -25px)")
+            // .on('mouseover', mouseOver)
             // .on('mouseout', function (d, i) {})
-            .call(plugins.drag(simulation));
-
-        const link = d3.select('svg g')
-            .selectAll("line")
-            .data(links)
-            .join("line")
-            .attr("stroke", "#aaaaaa")
-            .attr("stroke-width", 1)
             .call(plugins.drag(simulation));
 
         const labels = d3.select('svg g')
@@ -95,11 +103,33 @@ function EXPLORER(props) {
             .selectAll("text")
             .data(nodes)
             .enter().append("text")
-            .text(function (node) { if (node.labels.includes("nfl_teams")) { return node.properties.team } else { return node.properties.label.replaceAll("_", " ") } })
+            .text(function (node) { if (node.labels.includes("nfl_teams")) { return "" } else { return `${node.properties.year} ${node.properties.week}` } })
             .attr("font-size", 12)
             .attr("stroke", "white")
             .attr("dx", 0)
             .attr("dy", 0)
+            .call(plugins.drag(simulation));
+
+        const images = d3.select('svg g') 
+            .selectAll("images")
+            .data(nodes.filter(x => x.labels && x.labels.includes("nfl_teams")))
+            // .join("circle")
+            // .attr("r", 20)
+            // .attr("stroke-width", 2)
+            // .attr("stroke", function(node){
+            //     if (node.labels.includes("nfl_teams")) { return node.properties.secondary_color } else { return "#000000" }
+            // })
+            // .attr("fill", function (node) {
+            //     if (node.labels.includes("nfl_teams")) { return node.properties.primary_color } else { return "#333333" }
+            // })
+            // .enter().append("svg:image")
+            .join("svg:image")
+            .attr("xlink:href", function(node){ if(node.properties && node.properties.logo_url) { return node.properties.logo_url } else { return "" } })
+            .attr("width", 50)
+            .attr("height", 50)
+            .style("transform", "translate(-25px, -25px)")
+            .on('mouseover', mouseOver)
+            // .on('mouseout', function (d, i) {})
             .call(plugins.drag(simulation));
 
         

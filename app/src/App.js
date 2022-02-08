@@ -22,7 +22,7 @@ import "./static/scss/volt.scss";
 
 function App(props) {
 
-  // console.log(props.params)
+  // console.log(props.pages)
 
   const { isAuthenticated } = useAuth0();
 

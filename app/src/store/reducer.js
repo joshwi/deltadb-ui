@@ -30,7 +30,7 @@ const paramsReducer = (state = { view: "table", category: "nfl", node: "games", 
     }
 }
 
-const pagesReducer = (state = { "table_nfl_games": { "filters": [{ "header": "year", "name": "year", "active": true, "value": "20.*" }, { "header": "week", "name": "week", "active": true, "value": "[^\\d]+" }, { "header": "home team", "name": "home_team", "active": true, "value": "City" }] } }, action) => {
+const pagesReducer = (state = { "table_nfl_games": { "filters": [{ "header": "year", "name": "year", "active": true, "value": "20.*" }, { "header": "week", "name": "week", "active": true, "value": "[^\\d]+" }, { "header": "home team", "name": "home_team", "active": true, "value": "Chiefs" }] } }, action) => {
     switch (action.type) {
         case types.SET_PAGE:
             return { ...state, [action.key]: { ...state[action.key], ...action.data } }

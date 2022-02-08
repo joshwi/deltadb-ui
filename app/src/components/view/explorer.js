@@ -99,7 +99,8 @@ function EXPLORER(props) {
             //   .text(function() {
             //     return i.properties.label;
             //   });
-            // props.actions.setPage("explorer", { data: { ...i.properties } })
+            let label = i.labels.length > 0 ? i.labels[0] : ""
+            props.actions.setPage("explorer", { key: label, summary: { ...i.properties } })
         };
 
         d3.select(".d3-graph > *").remove()

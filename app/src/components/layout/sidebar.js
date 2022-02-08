@@ -77,14 +77,14 @@ export default (props) => {
               <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
                 <Link style={{ textDecoration: 'none' }} to={`/explorer/${props.params.category ? props.params.category : "nfl"}/${props.params.source ? props.params.source : "teams"}/${props.params.target ? props.params.target : "games"}`}><i className="bi bi-cursor" /><span>&nbsp;&nbsp;Explorer</span></Link>
               </button>
-              <div style={{ padding: "5px" }} />
+              {/* <div style={{ padding: "5px" }} />
               <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
                 <Link style={{ textDecoration: 'none' }} to={"/"}><i className="bi bi-bar-chart" /><span>&nbsp;&nbsp;Charts</span></Link>
               </button>
               <div style={{ padding: "5px" }} />
               <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
                 <Link style={{ textDecoration: 'none' }} to={"/map"}><i className="bi bi-map" /><span>&nbsp;&nbsp;Maps</span></Link>
-              </button>
+              </button> */}
               <div style={{ padding: "5px" }} />
             </Nav>
             {!show && (

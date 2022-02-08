@@ -50,7 +50,7 @@ $text-color: #ffffff !important;
 
 .table {
   font-size: 0.75rem;
-  border: 1px solid #454d55;
+  // border: 1px solid #454d55;
   border-radius: 10px;
 }
 
@@ -63,34 +63,51 @@ $text-color: #ffffff !important;
 }
 
 .primaryColor{
+  box-shadow: none;
   background-color: $primary-color;
   color: $text-color;
 }
 
 .secondaryColor{
+  box-shadow: none;
   background-color: $secondary-color;
   color: $text-color;
 }
 
 .secondaryColorText{
+  box-shadow: none;
   color: $secondary-color;
 }
 
+.secondaryColorBorder{
+  border: 1px solid $secondary-color;
+}
+
 #primaryColor{
+  box-shadow: none;
   background-color: $primary-color;
   color: $text-color;
 }
 
 #secondaryColor{
+  box-shadow: none;
   background-color: $secondary-color;
   color: $text-color;
 }
 
 #secondaryColorText{
+  box-shadow: none;
   color: $secondary-color;
 }
 
 #mapbox { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; }
+
+.draggable {
+  th, td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
 
 .hide-button {
   display: inline-flex;

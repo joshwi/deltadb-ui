@@ -102,7 +102,7 @@ function TableSearch(props) {
                     return <Col className="centerDiv" key={index} style={{ marginBottom: "10px" }}>
                         <FormGroup>
                             <Label style={{ color: "white" }}>{entry.header.toUpperCase()}</Label>
-                            <Input id="primaryColor" placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
+                            <Input id="primaryColor" style={{border: "none"}} placeholder={entry.value} value={entry.value !== undefined ? entry.value : null} onChange={(e) => SetFilters(edit(filters, entry.name, e.target.value))} onKeyUp={(e) => submit(e.key)} />
                         </FormGroup>
                     </Col>
                 }

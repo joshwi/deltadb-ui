@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
-import Fuse from "fuse.js";
-import { Container, Row, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input } from "reactstrap"
+import { Container, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input } from "reactstrap"
 import Draggable from "react-draggable"
 import _ from "underscore"
 

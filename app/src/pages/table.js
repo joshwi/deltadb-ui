@@ -55,12 +55,8 @@ function TablePage(props) {
                 <span style={{ margin: "10px" }} />
                 <div className="centerDiv">
                     <FilterBar {...props} />
-                    {/* <span style={{ margin: "10px" }} />
-                    <CSVLink filename={'deltadb.csv'} data={page && page.csv ? page.csv : []} style={{ backgroundColor: "transparent" }}>
-                        <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }}><i className="bi bi-filetype-csv" style={{ color: "white" }} /></button>
-                    </CSVLink> */}
                     <span style={{ margin: "10px" }} />
-                    <Dropdown isOpen={visible.headers} toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
+                    <Dropdown isOpen={visible.headers} direction="left" toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
                         <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}><i class="bi bi-layout-three-columns" /></DropdownToggle>
                         <DropdownMenu children={true}>
                             {page && page.headers && page.headers.map((entry, index) => {

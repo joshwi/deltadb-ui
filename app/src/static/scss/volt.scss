@@ -50,8 +50,21 @@ $text-color: #ffffff !important;
 
 .table {
   font-size: 0.75rem;
-  // border: 1px solid #454d55;
   border-radius: 10px;
+  border: transparent;
+  display: block;
+  text-align: center;
+  thead,tbody,tfoot,th,tr,td{
+    border: none!important;
+  }
+  thead,tfoot{
+    display: inline-flex;
+    width: 100%;
+  }
+  tbody {
+    display: inherit;
+    overflow-x: scroll;
+  }
 }
 
 .centerDiv {

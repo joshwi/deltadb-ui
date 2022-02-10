@@ -41,7 +41,7 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 		<input
 			className="form-control"
 			id="primaryColor"
-			style={{ height: '2rem' }}
+			style={{ height: '2rem', display: 'block', width: '100%' }}
 			value={globalFilter || ''}
 			onChange={(e) => {
 				setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
@@ -99,7 +99,7 @@ function TableComponent(props) {
 
 	React.useEffect(() => { skipResetRef.current = false }, [data])
 
-	React.useEffect(() => { props.actions.setPage(`table_${props.params.category}_${props.params.node}`, { csv: prepareData(props.headers, data) })}, [props.headers, data])
+	React.useEffect(() => { props.actions.setPage(`table_${props.params.category}_${props.params.node}`, { csv: prepareData(props.headers, data) }) }, [props.headers, data])
 
 	const filterTypes = React.useMemo(
 		() => ({
@@ -188,125 +188,107 @@ function TableComponent(props) {
 
 	// Render the UI for your table
 	return (
-		<Container fluid className="table" id="primaryColor">
-			<Row style={{ height: '50px', overflowX: "visible", overflowY: "hidden" }}>
-				<Col style={{ display: 'flex', justifyContent: 'center' }}>
-					<div style={{ display: 'table', height: '50px', width: "98%", backgroundColor: "transparent" }}>
+		<table className="table" id="primaryColor" {...getTableProps()}>
+			<thead>
+				<tr style={{ display: "inline-flex", width: "100%" }}>
+					<th style={{ display: "inline-flex", width: "100%" }}>
 						<GlobalFilter
 							preGlobalFilteredRows={preGlobalFilteredRows}
 							globalFilter={globalFilter}
 							setGlobalFilter={setGlobalFilter}
 						/>
-						{/* <CSVLink filename={'deltadb.csv'} data={prepareData(props.headers, data)} style={{ backgroundColor: "transparent" }}>
-							<button type="button" className="btn btn-sm" id="secondaryColor" style={{ border: "transparent" }}><span>Export</span></button>
-						</CSVLink> */}
-					</div>
-				</Col>
-			</Row>
-			{/* <Row style={{ border: "transparent" }}> */}
-				<Col style={{ border: "transparent", display: 'flex', justifyContent: 'center', textAlign: "center", overflowX: "visible", overflowY: "hidden" }}>
-					<div style={{ display: 'table' }}>
-						<table id="primaryColor" style={{ border: "transparent" }} {...getTableProps()}>
-							<thead>
-								<tr>
-									{headerGroups.length > 1 && (
-										<th className="th" {...headerGroups[1].getHeaderGroupProps()}>
-											{headerGroups[1].headers.map((column, index) => (
-												<React.Fragment key={index}>
-													<div key={index} {...column.getHeaderProps()}>
-														<span {...column.getSortByToggleProps()}>
-															{column.render('Header')}
-															{column.isSorted ? (column.isSortedDesc ? <i className="bi bi-chevron-down" style={{ color: "white", margin: "5px" }} /> : <i className="bi bi-chevron-up" style={{ color: "white", margin: "5px" }} />) : ''}
-														</span>
-														<div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>
-													</div>
-													{column.resize && (
-														<div className="parent" style={{ minHeight: "50px" }}>
-															<div className="child">
-																<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />
-															</div>
-														</div>
-													)}
-												</React.Fragment>
-											))}
-										</th>
+					</th>
+				</tr>
+			</thead>
+			<tbody {...getTableBodyProps()}>
+				<tr>
+					{headerGroups.length > 1 && (
+						<th {...headerGroups[1].getHeaderGroupProps()}>
+							{headerGroups[1].headers.map((column, index) => (
+								<React.Fragment key={index}>
+									<div key={index} {...column.getHeaderProps()}>
+										<span {...column.getSortByToggleProps()}>
+											{column.render('Header')}
+											{column.isSorted ? (column.isSortedDesc ? <i className="bi bi-chevron-down" style={{ color: "white", margin: "5px" }} /> : <i className="bi bi-chevron-up" style={{ color: "white", margin: "5px" }} />) : ''}
+										</span>
+										<div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>
+									</div>
+									{column.resize && (
+										<div className="parent" style={{ minHeight: "50px" }}>
+											<div className="child">
+												<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />
+											</div>
+										</div>
 									)}
-								</tr>
-							</thead>
-							<tbody {...getTableBodyProps()}>
-								{page.map((row) => {
-									prepareRow(row);
+								</React.Fragment>
+							))}
+						</th>
+					)}
+				</tr>
+				{page.map((row) => {
+					prepareRow(row);
+					return (
+						<tr {...row.getRowProps()}>
+							{row.cells.map((cell) => {
+								if (cell.column.Header === "TEAM" || cell.column.Header === "OPP") {
+									let team = props.teams.colors.filter(x => x.team === cell.value).pop()
 									return (
-										<tr {...row.getRowProps()}>
-											{row.cells.map((cell) => {
-												if (cell.column.Header === "TEAM" || cell.column.Header === "OPP") {
-													let team = props.teams.colors.filter(x => x.team === cell.value).pop()
-													return (
-														<td {...cell.getCellProps({ style: { backgroundColor: team && team.primary_color ? team.primary_color : "", color: team && team.secondary_color ? team.secondary_color : "" } })}>
-															{cell.value}
-														</td>
-													);
-												} else {
-													return (
-														<td {...cell.getCellProps()}>
-															{cell.value}
-														</td>
-													);
-												}
-											})}
-										</tr>
+										<td {...cell.getCellProps({ style: { backgroundColor: team && team.primary_color ? team.primary_color : "", color: team && team.secondary_color ? team.secondary_color : "" } })}>
+											{cell.value}
+										</td>
 									);
-								})}
-							</tbody>
-						</table>
+								} else {
+									return (
+										<td {...cell.getCellProps()}>
+											{cell.value}
+										</td>
+									);
+								}
+							})}
+						</tr>
+					);
+				})}
+			</tbody>
+			<tfoot>
+				<div className="centerDiv" style={{ display: "inline-flex", width: "100%" }}>
+					<div className="btn-group">
+						<button className="btn btn-default" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+							<i className="bi bi-chevron-left" id="secondaryColorText" />
+						</button>
+						<button className="btn btn-default" onClick={() => previousPage()} disabled={!canPreviousPage}>
+							<i className="bi bi-caret-left-fill" id="secondaryColorText" />
+						</button>
+						{pageIndex - 3 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 3)} disabled={!canPreviousPage}>
+							{pageIndex - 2}
+						</button>)}
+						{pageIndex - 2 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 2)} disabled={!canPreviousPage}>
+							{pageIndex - 1}
+						</button>)}
+						{pageIndex - 1 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 1)} disabled={!canPreviousPage}>
+							{pageIndex}
+						</button>)}
+						<button className="btn btn-default" style={{ color: "white" }} disabled={true}>
+							{pageIndex + 1}
+						</button>
+						{pageIndex + 1 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 1)} disabled={!canNextPage}>
+							{pageIndex + 2}
+						</button>)}
+						{pageIndex + 2 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 2)} disabled={!canNextPage}>
+							{pageIndex + 3}
+						</button>)}
+						{pageIndex + 3 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 3)} disabled={!canNextPage}>
+							{pageIndex + 4}
+						</button>)}
+						<button className="btn btn-default" onClick={() => nextPage()} disabled={!canNextPage}>
+							<i className="bi bi-caret-right-fill" id="secondaryColorText" />
+						</button>
+						<button className="btn btn-default" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+							<i className="bi bi-chevron-right" id="secondaryColorText" />
+						</button>
 					</div>
-				</Col>
-			{/* </Row> */}
-			<Row style={{ color: 'white', marginTop: '10px', height: '50px', border: "none" }}>
-				<Col style={{ display: 'flex', justifyContent: 'center' }}>
-					<div style={{ display: 'table', height: '50px', backgroundColor: "transparent" }}>
-						<div style={{ color: 'white', display: 'table-cell', verticalAlign: 'middle', whiteSpace: "nowrap" }}>
-							{/* <Pagination {...{gotoPage: gotoPage, canPreviousPage: canPreviousPage, previousPage: previousPage, canPreviousPage: canPreviousPage, nextPage: nextPage, canNextPage: canNextPage,  pageCount: pageCount}}/> */}
-							<div className="btn-group">
-								<button className="btn btn-default" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-									<i className="bi bi-chevron-left" style={{ color: "white" }} />
-								</button>
-								<button className="btn btn-default" onClick={() => previousPage()} disabled={!canPreviousPage}>
-									<i className="bi bi-caret-left-fill" style={{ color: "white" }} />
-								</button>
-								{pageIndex - 3 >= 0 && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex - 3)} disabled={!canPreviousPage}>
-									{pageIndex - 2}
-								</button>)}
-								{pageIndex - 2 >= 0 && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex - 2)} disabled={!canPreviousPage}>
-									{pageIndex - 1}
-								</button>)}
-								{pageIndex - 1 >= 0 && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex - 1)} disabled={!canPreviousPage}>
-									{pageIndex}
-								</button>)}
-								<button className="btn btn-default" id="secondaryColorText" disabled={true}>
-									{pageIndex + 1}
-								</button>
-								{pageIndex + 1 < pageOptions.length && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex + 1)} disabled={!canNextPage}>
-									{pageIndex + 2}
-								</button>)}
-								{pageIndex + 2 < pageOptions.length && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex + 2)} disabled={!canNextPage}>
-									{pageIndex + 3}
-								</button>)}
-								{pageIndex + 3 < pageOptions.length && (<button className="btn btn-default" style={{ color: "white" }} onClick={() => gotoPage(pageIndex + 3)} disabled={!canNextPage}>
-									{pageIndex + 4}
-								</button>)}
-								<button className="btn btn-default" onClick={() => nextPage()} disabled={!canNextPage}>
-									<i className="bi bi-caret-right-fill" style={{ color: "white" }} />
-								</button>
-								<button className="btn btn-default" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-									<i className="bi bi-chevron-right" style={{ color: "white" }} />
-								</button>
-							</div>
-						</div>
-					</div>
-				</Col>
-			</Row>
-		</Container>
+				</div>
+			</tfoot>
+		</table>
 	);
 }
 

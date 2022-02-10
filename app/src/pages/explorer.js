@@ -61,7 +61,6 @@ function Explorer(props) {
                     <Dropdown isOpen={visible.options} direction="left" toggle={() => { }}>
                         <DropdownToggle caret id="secondaryColor" style={{ border: "none" }} onClick={() => SetVisible({ ...visible, options: !visible.options })}><i class="bi bi-list" style={{ color: "white" }} /></DropdownToggle>
                         <DropdownMenu>
-                            {/* <DropdownItem divider /> */}
                             <DropdownItem header>View</DropdownItem>
                             <DropdownItem key={1}>
                                 <Label style={{ marginLeft: "5px" }} check>
@@ -71,36 +70,6 @@ function Explorer(props) {
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                    <span className="hide-button">
-                        {/* <span style={{ margin: "10px" }}></span>
-                        <Dropdown isOpen={visible.source} toggle={() => SetVisible({ ...visible, source: !visible.source })}>
-                            <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}>Source</DropdownToggle>
-                            <DropdownMenu>
-                                {Object.values(db.keys).filter(x => x.category === category).sort().map((entry, index) => {
-                                    return <DropdownItem key={index}>
-                                        <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setParams({ source: entry.node })} check>
-                                            <Input type="checkbox" defaultChecked={entry.node === source} onClick={() => props.actions.setParams({ source: entry.node })} />{' '}
-                                            {entry.node}
-                                        </Label>
-                                    </DropdownItem>
-                                })}
-                            </DropdownMenu>
-                        </Dropdown>
-                        <span style={{ margin: "10px" }}></span>
-                        <Dropdown isOpen={visible.target} toggle={() => SetVisible({ ...visible, target: !visible.target })}>
-                            <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}>Target</DropdownToggle>
-                            <DropdownMenu>
-                                {Object.values(db.keys).filter(x => x.category === category).sort().map((entry, index) => {
-                                    return <DropdownItem key={index}>
-                                        <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setParams({ target: entry.node })} check>
-                                            <Input type="checkbox" defaultChecked={entry.node === target} onClick={() => props.actions.setParams({ target: entry.node })} />{' '}
-                                            {entry.node}
-                                        </Label>
-                                    </DropdownItem>
-                                })}
-                            </DropdownMenu>
-                        </Dropdown> */}
-                    </span>
                 </div>
             </div>
             <D3 records={page && page.data ? page.data : {}} {...props} />

@@ -79,10 +79,6 @@ export default (props) => {
               </button>
               {/* <div style={{ padding: "5px" }} />
               <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
-                <Link style={{ textDecoration: 'none' }} to={"/"}><i className="bi bi-bar-chart" /><span>&nbsp;&nbsp;Charts</span></Link>
-              </button>
-              <div style={{ padding: "5px" }} />
-              <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
                 <Link style={{ textDecoration: 'none' }} to={"/map"}><i className="bi bi-map" /><span>&nbsp;&nbsp;Maps</span></Link>
               </button> */}
               <div style={{ padding: "5px" }} />
@@ -100,7 +96,7 @@ export default (props) => {
                 {!user && <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => loginWithRedirect()}>Login / Sign Up</button>}
                 {user && <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => logout({ returnTo: window.location.origin })}>Logout</button>}
                 <div style={{ padding: "5px" }} />
-                {user && <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => SetSettings(!settings)}><i className="bi bi-gear" /><span>&nbsp;&nbsp;Settings</span></button>}
+                {/* {user && <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => SetSettings(!settings)}><i className="bi bi-gear" /><span>&nbsp;&nbsp;Settings</span></button>} */}
               </Nav>
             )}
           </div>

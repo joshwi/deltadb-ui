@@ -81,7 +81,7 @@ function ExplorerFilters(props) {
 
     return (
         <>
-            <Input className="primaryColor" id="search-bar" placeholder={"search"} value={query} style={{ border: "none", width: "70%", display: "inline-flex" }} onChange={(e) => SetQuery(e.target.value)} onKeyUp={() => check(query, properties)} />
+            <Input className="primaryColor" id="search-bar" placeholder={"search"} value={query} style={{ border: "none", display: "inline-flex" }} onChange={(e) => SetQuery(e.target.value)} onKeyUp={() => check(query, properties)} />
             {results && results.length > 0 && (
                 <div className="dropdown-menu" id="primaryColor" style={{ display: "inline-flex", margin: "10px", width: "100%", overflowX: "scroll" }}>
                     {results.map((entry, index) => { return <a className="dropdown-item" id="primaryColor" onClick={() => { chooseTag(entry.item) }} key={index}>{entry.item ? entry.item : ""}</a> })}

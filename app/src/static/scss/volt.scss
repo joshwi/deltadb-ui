@@ -60,6 +60,7 @@ $text-color: #ffffff !important;
   thead,tfoot{
     display: inline-flex;
     width: 100%;
+    overflow-x: hidden;
   }
   tbody {
     display: inherit;

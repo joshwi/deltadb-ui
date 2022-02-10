@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from 'react';
-import { Container, Col, Row } from 'reactstrap';
 import _ from "underscore"
+import { CSVLink } from 'react-csv';
 import {
 	useTable,
 	usePagination,
@@ -15,10 +15,8 @@ import {
 	useResizeColumns,
 } from 'react-table';
 
-// import { CSVLink } from 'react-csv';
-// Define a default UI for filtering
 function DefaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter, Header } }) {
-	const count = preFilteredRows.length;
+	// const count = preFilteredRows.length;
 
 	return (
 		<input
@@ -41,7 +39,7 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 		<input
 			className="form-control"
 			id="primaryColor"
-			style={{ height: '2rem', display: 'block', width: '100%' }}
+			style={{ height: '2.2rem', display: 'block', width: '100%' }}
 			value={globalFilter || ''}
 			onChange={(e) => {
 				setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
@@ -64,7 +62,7 @@ function TableComponent(props) {
 
 	const [data, SetData] = useState([])
 	const [columns, SetColumns] = useState([])
-	const [visible, SetVisible] = useState(false)
+	const [visible, SetVisible] = useState({ header: true, filter: true, footer: true })
 
 	const skipResetRef = React.useRef(false)
 
@@ -77,7 +75,6 @@ function TableComponent(props) {
 					accessor: entry.name,
 					aggregate: entry.name,
 					resize: true,
-					// resize: props.headers.filter(x => x.active === true).length === index + 1 ? false : true,
 					Aggregated: ({ value }) => `${value} Names`,
 				}
 			})
@@ -99,8 +96,6 @@ function TableComponent(props) {
 
 	React.useEffect(() => { skipResetRef.current = false }, [data])
 
-	React.useEffect(() => { props.actions.setPage(`table_${props.params.category}_${props.params.node}`, { csv: prepareData(props.headers, data) }) }, [props.headers, data])
-
 	const filterTypes = React.useMemo(
 		() => ({
 			text: (rows, id, filterValue) => {
@@ -113,16 +108,6 @@ function TableComponent(props) {
 			}
 		}), []
 	);
-
-	const getColumnWidth = (rows, accessor, headerText) => {
-		const maxWidth = 400
-		const magicSpacing = 10
-		const cellLength = Math.max(
-			...rows.map(row => (`${row[accessor]}` || '').length),
-			headerText.length,
-		)
-		return Math.min(maxWidth, cellLength * magicSpacing)
-	}
 
 	const defaultColumn = React.useMemo(
 		() => ({
@@ -158,7 +143,7 @@ function TableComponent(props) {
 		gotoPage,
 		nextPage,
 		previousPage,
-		// setPageSize,
+		setPageSize,
 		preGlobalFilteredRows,
 		setGlobalFilter,
 		state: {
@@ -186,20 +171,28 @@ function TableComponent(props) {
 		useResizeColumns
 	);
 
-	// Render the UI for your table
+	useEffect(() => { if (props.rows) { setPageSize(props.rows) } }, [props.rows])
+
 	return (
 		<table className="table" id="primaryColor" {...getTableProps()}>
-			<thead>
-				<tr style={{ display: "inline-flex", width: "100%" }}>
-					<th style={{ display: "inline-flex", width: "100%" }}>
-						<GlobalFilter
-							preGlobalFilteredRows={preGlobalFilteredRows}
-							globalFilter={globalFilter}
-							setGlobalFilter={setGlobalFilter}
-						/>
-					</th>
-				</tr>
-			</thead>
+			{visible.header && (
+				<thead>
+					<tr style={{ display: "inline-flex", width: "100%" }}>
+						<th style={{ display: "inline-flex", width: "100%" }}>
+							<GlobalFilter
+								preGlobalFilteredRows={preGlobalFilteredRows}
+								globalFilter={globalFilter}
+								setGlobalFilter={setGlobalFilter}
+							/>
+						</th>
+						<th>
+							<CSVLink filename={'deltadb.csv'} data={prepareData(props.headers, data)} style={{ backgroundColor: "transparent" }}>
+								<button type="button" className="btn" id="secondaryColor" style={{ border: "none" }}><i className="bi bi-filetype-csv" style={{ color: "white" }} /></button>
+							</CSVLink>
+						</th>
+					</tr>
+				</thead>
+			)}
 			<tbody {...getTableBodyProps()}>
 				<tr>
 					{headerGroups.length > 1 && (
@@ -211,9 +204,9 @@ function TableComponent(props) {
 											{column.render('Header')}
 											{column.isSorted ? (column.isSortedDesc ? <i className="bi bi-chevron-down" style={{ color: "white", margin: "5px" }} /> : <i className="bi bi-chevron-up" style={{ color: "white", margin: "5px" }} />) : ''}
 										</span>
-										<div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>
+										{visible.filter && <div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>}
 									</div>
-									{column.resize && ( <i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} /> )}
+									{column.resize && (<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />)}
 								</React.Fragment>
 							))}
 						</th>
@@ -243,45 +236,47 @@ function TableComponent(props) {
 					);
 				})}
 			</tbody>
-			<tfoot>
-				<div className="centerDiv" style={{ display: "inline-flex", width: "100%" }}>
-					<div className="btn-group">
-						<button className="btn btn-default" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-							<i className="bi bi-chevron-left" id="secondaryColorText" />
-						</button>
-						<button className="btn btn-default" onClick={() => previousPage()} disabled={!canPreviousPage}>
-							<i className="bi bi-caret-left-fill" id="secondaryColorText" />
-						</button>
-						{pageIndex - 3 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 3)} disabled={!canPreviousPage}>
-							{pageIndex - 2}
-						</button>)}
-						{pageIndex - 2 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 2)} disabled={!canPreviousPage}>
-							{pageIndex - 1}
-						</button>)}
-						{pageIndex - 1 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 1)} disabled={!canPreviousPage}>
-							{pageIndex}
-						</button>)}
-						<button className="btn btn-default" style={{ color: "white" }} disabled={true}>
-							{pageIndex + 1}
-						</button>
-						{pageIndex + 1 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 1)} disabled={!canNextPage}>
-							{pageIndex + 2}
-						</button>)}
-						{pageIndex + 2 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 2)} disabled={!canNextPage}>
-							{pageIndex + 3}
-						</button>)}
-						{pageIndex + 3 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 3)} disabled={!canNextPage}>
-							{pageIndex + 4}
-						</button>)}
-						<button className="btn btn-default" onClick={() => nextPage()} disabled={!canNextPage}>
-							<i className="bi bi-caret-right-fill" id="secondaryColorText" />
-						</button>
-						<button className="btn btn-default" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-							<i className="bi bi-chevron-right" id="secondaryColorText" />
-						</button>
+			{visible.footer && (
+				<tfoot>
+					<div className="centerDiv" style={{ display: "inline-flex", width: "100%" }}>
+						<div className="btn-group">
+							<button className="btn btn-default" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+								<i className="bi bi-chevron-left" id="secondaryColorText" />
+							</button>
+							<button className="btn btn-default" onClick={() => previousPage()} disabled={!canPreviousPage}>
+								<i className="bi bi-caret-left-fill" id="secondaryColorText" />
+							</button>
+							{pageIndex - 3 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 3)} disabled={!canPreviousPage}>
+								{pageIndex - 2}
+							</button>)}
+							{pageIndex - 2 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 2)} disabled={!canPreviousPage}>
+								{pageIndex - 1}
+							</button>)}
+							{pageIndex - 1 >= 0 && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex - 1)} disabled={!canPreviousPage}>
+								{pageIndex}
+							</button>)}
+							<button className="btn btn-default" style={{ color: "white" }} disabled={true}>
+								{pageIndex + 1}
+							</button>
+							{pageIndex + 1 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 1)} disabled={!canNextPage}>
+								{pageIndex + 2}
+							</button>)}
+							{pageIndex + 2 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 2)} disabled={!canNextPage}>
+								{pageIndex + 3}
+							</button>)}
+							{pageIndex + 3 < pageOptions.length && (<button className="btn btn-default" id="secondaryColorText" onClick={() => gotoPage(pageIndex + 3)} disabled={!canNextPage}>
+								{pageIndex + 4}
+							</button>)}
+							<button className="btn btn-default" onClick={() => nextPage()} disabled={!canNextPage}>
+								<i className="bi bi-caret-right-fill" id="secondaryColorText" />
+							</button>
+							<button className="btn btn-default" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+								<i className="bi bi-chevron-right" id="secondaryColorText" />
+							</button>
+						</div>
 					</div>
-				</div>
-			</tfoot>
+				</tfoot>
+			)}
 		</table>
 	);
 }

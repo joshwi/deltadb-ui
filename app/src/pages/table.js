@@ -26,6 +26,7 @@ function TablePage(props) {
     const params = useSelector(state => state.params);
     const page = useSelector(state => state.pages[`table_${category}_${node}`]);
     const [visible, SetVisible] = useState({ "filters": false, "headers": false, "options": false })
+    const [pageSize, setPageSize] = useState(25)
 
     useEffect(() => {
         if (category && node) {
@@ -54,13 +55,13 @@ function TablePage(props) {
                 <span style={{ margin: "10px" }} />
                 <div className="centerDiv">
                     <FilterBar {...props} />
-                    <span style={{ margin: "10px" }} />
+                    {/* <span style={{ margin: "10px" }} />
                     <CSVLink filename={'deltadb.csv'} data={page && page.csv ? page.csv : []} style={{ backgroundColor: "transparent" }}>
                         <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }}><i className="bi bi-filetype-csv" style={{ color: "white" }} /></button>
-                    </CSVLink>
+                    </CSVLink> */}
                     <span style={{ margin: "10px" }} />
                     <Dropdown isOpen={visible.headers} toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
-                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}><i class="bi bi-layout-three-columns"/></DropdownToggle>
+                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}><i class="bi bi-layout-three-columns" /></DropdownToggle>
                         <DropdownMenu children={true}>
                             {page && page.headers && page.headers.map((entry, index) => {
                                 return <DropdownItem key={index}>
@@ -73,11 +74,23 @@ function TablePage(props) {
                         </DropdownMenu>
                     </Dropdown>
                     <span style={{ margin: "10px" }} />
+                    <Dropdown isOpen={visible.options} direction="left" toggle={() => { }}>
+                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }} onClick={() => SetVisible({ ...visible, options: !visible.options })}><i class="bi bi-list" style={{ color: "white" }} /></DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem header>Rows</DropdownItem>
+                            <DropdownItem key={1}>
+                                <div className="btn-group">
+                                    <button className="btn btn-default" onClick={() => setPageSize(10)} disabled={pageSize == 10}>10</button>
+                                    <button className="btn btn-default" onClick={() => setPageSize(25)} disabled={pageSize == 25}>25</button>
+                                    <button className="btn btn-default" onClick={() => setPageSize(100)} disabled={pageSize == 100}>100</button>
+                                </div>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
             </div>
-            {/* <SearchBar {...props} /> */}
             <span style={{ margin: "30px" }} />
-            {page && page.data && page.data.length > 0 && <Table headers={page.headers} data={page.data ? page.data : []} {...props} />}
+            {page && page.data && page.data.length > 0 && <Table rows={pageSize} headers={page.headers} data={page.data ? page.data : []} {...props} />}
         </Container>
     )
 }

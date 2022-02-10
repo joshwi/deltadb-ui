@@ -35,11 +35,10 @@ function App(props) {
     <Router>
           <Sidebar {...props} />
           {isAuthenticated && (
-            <main className="content" style={{padding: "2rem"}}>
+            <main className="content" style={{padding: "1rem"}}>
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} />
-                <Route path={"/chart/:schema"} exact render={() => <Chart {...props} />} />
                 <Route path={"/explorer/:category/:source/:target"} exact render={() => <Explorer {...props} />} />
                 <Route path={"/map"} exact render={() => <Map {...props} />} />
                 <Route component={NotFound} />

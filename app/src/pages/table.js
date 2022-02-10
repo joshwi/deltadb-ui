@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
-import { CSVLink } from 'react-csv';
-import { Container, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input } from "reactstrap"
+import { Container, Row, Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap"
 import Table from "../components/view/table"
 import FilterBar from "../components/controller/tablefilter"
 
@@ -28,6 +27,8 @@ function TablePage(props) {
     const [visible, SetVisible] = useState({ "filters": false, "headers": false, "options": false })
     const [pageSize, setPageSize] = useState(25)
 
+    const closeBtn = <button className="close" style={{ border: 0, backgroundColor: "transparent" }} onClick={() => SetVisible({ ...visible, headers: false })}><i class="bi bi-x" style={{ fontSize: "2rem", color: "white" }} /></button>;
+
     useEffect(() => {
         if (category && node) {
             props.actions.setParams({ category: category, node: node })
@@ -50,44 +51,54 @@ function TablePage(props) {
     }, [db.keys, params])
 
     return (
-        <Container fluid={true}>
-            <div style={{ padding: "6px 12px", fontFamily: "monospace", zIndex: 1, position: "relative", top: 0, right: 0, margin: "12px", borderRadius: "4px" }}>
-                <span style={{ margin: "10px" }} />
-                <div className="centerDiv">
-                    <FilterBar {...props} />
+        <>
+            <Container fluid={true}>
+                <div style={{ padding: "6px 12px", fontFamily: "monospace", zIndex: 1, position: "relative", top: 0, right: 0, margin: "12px", borderRadius: "4px" }}>
                     <span style={{ margin: "10px" }} />
-                    <Dropdown isOpen={visible.headers} direction="left" toggle={() => SetVisible({ ...visible, headers: !visible.headers })}>
-                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }}><i class="bi bi-layout-three-columns" /></DropdownToggle>
-                        <DropdownMenu children={true}>
-                            {page && page.headers && page.headers.map((entry, index) => {
-                                return <DropdownItem key={index}>
+                    <div className="centerDiv">
+                        <FilterBar {...props} />
+                        <span style={{ margin: "10px" }} />
+                        <Dropdown isOpen={visible.options} direction="left" toggle={() => { }}>
+                            <DropdownToggle caret id="secondaryColor" style={{ border: "none" }} onClick={() => SetVisible({ ...visible, options: !visible.options })}><i class="bi bi-list" style={{ color: "white" }} /></DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem header>Columns</DropdownItem>
+                                <DropdownItem key={1}>
+                                <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => SetVisible({...visible, headers: !visible.headers})}><i className="bi bi-layout-three-columns" style={{ color: "white" }} /></button>
+                                </DropdownItem>
+                                <DropdownItem header>Rows</DropdownItem>
+                                <DropdownItem key={2}>
+                                    <div className="btn-group">
+                                        <button className="btn btn-default" onClick={() => setPageSize(10)} disabled={pageSize == 10}>10</button>
+                                        <button className="btn btn-default" onClick={() => setPageSize(25)} disabled={pageSize == 25}>25</button>
+                                        <button className="btn btn-default" onClick={() => setPageSize(100)} disabled={pageSize == 100}>100</button>
+                                    </div>
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                </div>
+                <span style={{ margin: "30px" }} />
+                {page && page.data && page.data.length > 0 && <Table rows={pageSize} headers={page.headers} data={page.data ? page.data : []} {...props} />}
+            </Container>
+            <Modal size="xl" isOpen={visible.headers}>
+                <ModalHeader close={closeBtn} id="primaryColor" style={{ border: "none" }}><span id="primaryColor">Headers</span></ModalHeader>
+                <ModalBody id="primaryColor">
+                    <Row>
+                        {page && page.headers && page.headers.map((entry) => {
+                            return (
+                                <Col xs="3">
                                     <Label style={{ marginLeft: "5px" }} onClick={() => props.actions.setPage(`table_${category}_${node}`, { headers: update(page.headers, entry.name) })} check>
-                                        <Input type="checkbox" defaultChecked={entry.active} onClick={() => props.actions.setPage(`table_${category}_${node}`, { headers: update(page.headers, entry.name) })} />{' '}
+                                        <Input type="checkbox" defaultChecked={entry.active} />{' '}
                                         {entry.header}
                                     </Label>
-                                </DropdownItem>
-                            })}
-                        </DropdownMenu>
-                    </Dropdown>
-                    <span style={{ margin: "10px" }} />
-                    <Dropdown isOpen={visible.options} direction="left" toggle={() => { }}>
-                        <DropdownToggle caret id="secondaryColor" style={{ border: "none" }} onClick={() => SetVisible({ ...visible, options: !visible.options })}><i class="bi bi-list" style={{ color: "white" }} /></DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem header>Rows</DropdownItem>
-                            <DropdownItem key={1}>
-                                <div className="btn-group">
-                                    <button className="btn btn-default" onClick={() => setPageSize(10)} disabled={pageSize == 10}>10</button>
-                                    <button className="btn btn-default" onClick={() => setPageSize(25)} disabled={pageSize == 25}>25</button>
-                                    <button className="btn btn-default" onClick={() => setPageSize(100)} disabled={pageSize == 100}>100</button>
-                                </div>
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                </div>
-            </div>
-            <span style={{ margin: "30px" }} />
-            {page && page.data && page.data.length > 0 && <Table rows={pageSize} headers={page.headers} data={page.data ? page.data : []} {...props} />}
-        </Container>
+                                </Col>
+                            )
+                        })}
+                    </Row>
+                </ModalBody>
+                <ModalFooter id="primaryColor" style={{ border: "none" }}></ModalFooter>
+            </Modal>
+        </>
     )
 }
 

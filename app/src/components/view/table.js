@@ -213,13 +213,7 @@ function TableComponent(props) {
 										</span>
 										<div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>
 									</div>
-									{column.resize && (
-										<div className="parent" style={{ minHeight: "50px" }}>
-											<div className="child">
-												<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />
-											</div>
-										</div>
-									)}
+									{column.resize && ( <i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} /> )}
 								</React.Fragment>
 							))}
 						</th>

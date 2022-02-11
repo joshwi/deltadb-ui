@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import _ from "underscore"
 import { CSVLink } from 'react-csv';
+import { Row, Col } from "reactstrap";
 import {
 	useTable,
 	usePagination,
@@ -194,47 +195,52 @@ function TableComponent(props) {
 				</thead>
 			)}
 			<tbody {...getTableBodyProps()}>
-				<tr>
-					{headerGroups.length > 1 && (
-						<th {...headerGroups[1].getHeaderGroupProps()}>
-							{headerGroups[1].headers.map((column, index) => (
-								<React.Fragment key={index}>
-									<div key={index} {...column.getHeaderProps()}>
-										<span {...column.getSortByToggleProps()}>
-											{column.render('Header')}
-											{column.isSorted ? (column.isSortedDesc ? <i className="bi bi-chevron-down" style={{ color: "white", margin: "5px" }} /> : <i className="bi bi-chevron-up" style={{ color: "white", margin: "5px" }} />) : ''}
-										</span>
-										{visible.filter && <div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>}
-									</div>
-									{column.resize && (<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />)}
-								</React.Fragment>
-							))}
-						</th>
-					)}
-				</tr>
-				{page.map((row) => {
-					prepareRow(row);
-					return (
-						<tr {...row.getRowProps()}>
-							{row.cells.map((cell) => {
-								if (cell.column.Header === "TEAM" || cell.column.Header === "OPP") {
-									let team = props.teams.colors.filter(x => x.team === cell.value).pop()
-									return (
-										<td {...cell.getCellProps({ style: { backgroundColor: team && team.primary_color ? team.primary_color : "", color: team && team.secondary_color ? team.secondary_color : "" } })}>
-											{cell.value}
-										</td>
-									);
-								} else {
+				<span className="computer-content">
+					<tr>
+						{headerGroups.length > 1 && (
+							<th {...headerGroups[1].getHeaderGroupProps()}>
+								{headerGroups[1].headers.map((column, index) => (
+									<React.Fragment key={index}>
+										<div key={index} {...column.getHeaderProps()}>
+											<span {...column.getSortByToggleProps()}>
+												{column.render('Header')}
+												{column.isSorted ? (column.isSortedDesc ? <i className="bi bi-chevron-down" style={{ color: "white", margin: "5px" }} /> : <i className="bi bi-chevron-up" style={{ color: "white", margin: "5px" }} />) : ''}
+											</span>
+											{visible.filter && <div style={{ marginTop: "5px" }}>{column.canFilter ? column.render('Filter') : null}</div>}
+										</div>
+										{column.resize && (<i className="bi bi-grip-vertical" id="secondaryColorText" {...column.getResizerProps({ style: { fontSize: "1.25rem" } })} />)}
+									</React.Fragment>
+								))}
+							</th>
+						)}
+					</tr>
+					{page.map((row) => {
+						prepareRow(row);
+						return (
+							<tr {...row.getRowProps()}>
+								{row.cells.map((cell) => {
 									return (
 										<td {...cell.getCellProps()}>
 											{cell.value}
 										</td>
 									);
-								}
-							})}
-						</tr>
-					);
-				})}
+								})}
+							</tr>
+						);
+					})}
+				</span>
+				<span className="mobile-content">
+					{page.map((row) => {
+						prepareRow(row);
+						return (
+							<div>
+								{row.cells.map((cell, index) => {
+									return <Row key={index} style={{ textAlign: "left" }}><Col>{cell.column && cell.column.Header ? cell.column.Header : ""}</Col><Col>{cell.value}</Col></Row>
+								})}
+							</div>
+						)
+					})}
+				</span>
 			</tbody>
 			{visible.footer && (
 				<tfoot>

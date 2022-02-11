@@ -130,11 +130,26 @@ $text-color: #ffffff !important;
   display: none;
 }
 
+.computer-content {
+  display: block;
+}
+
+.mobile-content {
+  display: none;
+}
+
 @media(max-width: 900px) {
   .hide-button {
       display: none;
   }
   .show-button {
     display: inline-flex;
+  }
+  .computer-content {
+    display: none;
+  }
+  
+  .mobile-content {
+    display: block;
   }
 }

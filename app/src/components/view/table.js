@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import _ from "underscore"
 import { CSVLink } from 'react-csv';
-import { Row, Col } from "reactstrap";
+import {Row, Col} from "reactstrap";
 import {
 	useTable,
 	usePagination,
@@ -64,6 +64,7 @@ function TableComponent(props) {
 	const [data, SetData] = useState([])
 	const [columns, SetColumns] = useState([])
 	const [visible, SetVisible] = useState({ header: true, filter: true, footer: true })
+	const [content, SetContent] = useState({})
 
 	const skipResetRef = React.useRef(false)
 
@@ -230,13 +231,15 @@ function TableComponent(props) {
 					})}
 				</span>
 				<span className="mobile-content">
-					{page.map((row) => {
+					{page.map((row, id) => {
 						prepareRow(row);
 						return (
-							<div>
-								{row.cells.map((cell, index) => {
-									return <Row key={index} style={{ textAlign: "left" }}><Col>{cell.column && cell.column.Header ? cell.column.Header : ""}</Col><Col>{cell.value}</Col></Row>
-								})}
+							<div style={{padding: "5px 10px", margin: "10px 20px", border: "1.5px solid white", borderRadius: "5px"}}>
+							{content && !content[id] && row.cells.map((cell, index) => {
+							return <Row key={index} style={{textAlign: "left"}}><Col>{cell.column && cell.column.Header ? cell.column.Header : ""}</Col><Col>{cell.value}</Col></Row>})}
+							{content && content[id] && props.headers && props.headers.map((entry, index) => {
+							return <Row key={index} style={{textAlign: "left"}}><Col>{entry.header}</Col><Col>{row.original[entry.name]}</Col></Row>})}
+							<button type="button" onClick={() => {SetContent({...content, [id]: !content[id]})}} style={{ border: "none", backgroundColor: "transparent" }}><i className={`bi bi-chevron-${content && content[id] ? "up" : "down"}`} style={{ color: "white" }} /></button>
 							</div>
 						)
 					})}
@@ -245,7 +248,7 @@ function TableComponent(props) {
 			{visible.footer && (
 				<tfoot>
 					<div className="centerDiv" style={{ display: "inline-flex", width: "100%" }}>
-						<div className="btn-group">
+						<div className="btn-group" onClick={() => SetContent({})}>
 							<button className="btn btn-default" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
 								<i className="bi bi-chevron-left" id="secondaryColorText" />
 							</button>

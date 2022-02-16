@@ -13,7 +13,7 @@ function ExplorerFilters(props) {
 
     const db = useSelector(state => state.db)
     const params = useSelector(state => state.params);
-    const page = useSelector(state => state.pages[`explorer`]);
+    const page = useSelector(state => state.pages[`table_${category}_${node}`]);
 
     useEffect(() => {
         if (category && node) {
@@ -47,8 +47,7 @@ function ExplorerFilters(props) {
                 let url = new URL(`${window.location.origin}/api/v2/admin/db/node/${category}_${node}`)
                 let parameters = { filter: cypher }
                 Object.keys(parameters).forEach(key => url.searchParams.append(key, parameters[key]))
-
-                if (!page || page && cypher !== page.query) {
+                if (!page || cypher !== page.query) {
                     get(url).then(result => {
                         if (result.length > 0) {
                             props.actions.setPage(`table_${category}_${node}`, { query: cypher, data: result })

@@ -1,0 +1,31 @@
+env DELTADB_HOST;
+events {
+
+}
+http {
+    server {
+        listen 443 ssl;
+
+        root  /usr/share/nginx/html;
+        include /etc/nginx/mime.types;
+
+        server_name ${DELTADB_HOST} www.${DELTADB_HOST};
+
+        ssl_certificate /etc/letsencrypt/live/${DELTADB_HOST}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${DELTADB_HOST}/privkey.pem;
+
+        location / {
+            try_files $uri /index.html;
+        }
+        location /api {
+            proxy_pass http://www.${DELTADB_HOST}:5000/api;
+        }
+    }
+    server {
+        listen 80;
+
+        server_name ${DELTADB_HOST} www.${DELTADB_HOST};
+
+        return 301 https://$server_name$request_uri;
+    }
+}

@@ -46,7 +46,7 @@ function Explorer(props) {
                     grid={[5, 5]}
                     scale={1}
                 >
-                    <Container className="table handle draggable" id="primaryColor" style={{ position: "absolute", bottom: 0, right: 40, width: "300px", zIndex: 5, overflowX: "scroll", border: "none" }}>
+                    <Container className="table handle draggable" id="primaryColor" style={{ position: "absolute", bottom: 0, right: 40, width: "300px", zIndex: 5, textAlign: "left", overflowX: "auto", border: "none" }}>
                         <tr><th>Key</th><th>Value</th><th style={{ position: "absolute", right: 0 }}><i className="bi bi-x" onClick={() => SetVisible({ ...visible, draggable: false })} /></th></tr>
                         {Object.keys(summary).map((entry, index) => { return <tr key={index}><td>{entry.replaceAll("_", " ")}</td><td>{summary[entry]}</td></tr> })}
                         <span style={{ margin: "10px" }} />

@@ -2,7 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://www.joshwi.com:5000",
+  "proxy": "https://www.joshwi.com:5000",
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
     "@testing-library/jest-dom": "^4.2.4",

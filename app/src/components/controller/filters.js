@@ -25,7 +25,7 @@ function ExplorerFilters(props) {
     const [validation, SetValidation] = useState([])
     const [properties, SetProperties] = useState([])
     const [results, SetResults] = useState([])
-    const [query, SetQuery] = useState('b.year="2020" AND b.week="[^\\d]+"')
+    const [query, SetQuery] = useState(`b.year="${new Date().getFullYear() - 1}" AND b.week="[^\\d]+"`)
 
     useEffect(() => {
         if (db.keys[`${category}_${source}`] && db.keys[`${category}_${target}`] && db.keys[`${category}_${source}`].keys && db.keys[`${category}_${target}`].keys) {
@@ -49,7 +49,7 @@ function ExplorerFilters(props) {
                 let MATCH_STATEMENT = query.replaceAll("\=", "=~")
                 let cypher = `MATCH p=(a:${category}_${source})-[]->(b:${category}_${target}) WHERE ${MATCH_STATEMENT} RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link`
                 if (!page || page && cypher != page.query) {
-                    POST("/api/v2/admin/db/cypher/quick", { "cypher": cypher }).then(response => {
+                    POST("/api/v2/admin/db/query", { "cypher": cypher }).then(response => {
                         if (response.records && response.records.length > 0) {
                             props.actions.setPage(`explorer`, { query: cypher, data: response.records[0] })
                         }

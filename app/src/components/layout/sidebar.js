@@ -70,8 +70,11 @@ export default (props) => {
                 <Link to={"/"} id="secondaryColorText" style={{ border: "transparent", backgroundColor: "transparent", fontSize: "1.5rem", textDecoration: "none" }}><i className="bi bi-server" /><span>&nbsp;&nbsp;deltaDB</span></Link>
               </button>
               <Dropdown.Divider className="my-3 border-indigo" />
-              <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
+              {/* <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
                 <Link style={{ textDecoration: 'none' }} to={`/table/${props.params.category ? props.params.category : "nfl"}/${props.params.node ? props.params.node : "games"}`}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
+              </button> */}
+              <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>
+                <Link style={{ textDecoration: 'none' }} to={`/table/${props.params.category ? props.params.category : "nfl"}/${props.params.source ? props.params.source : "teams"}/${props.params.target ? props.params.target : "games"}/${props.params.label ? props.params.label : "kan"}`}><i className="bi bi-table" /><span>&nbsp;&nbsp;Tables</span></Link>
               </button>
               <div style={{ padding: "5px" }} />
               <button type="button" className="btn btn-lg" style={{ border: "transparent", backgroundColor: "transparent", color: "white" }}>

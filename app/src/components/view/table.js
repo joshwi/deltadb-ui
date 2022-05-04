@@ -94,6 +94,8 @@ function TableComponent(props) {
 		)
 	}
 
+	React.useEffect(() => { if(props.options){SetVisible(props.options)} }, [props.options])
+
 	React.useEffect(() => { SetData(props.data) }, [props.data])
 
 	React.useEffect(() => { skipResetRef.current = false }, [data])

@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 import plugins from "../../utility/D3/plugins"
+import {useHistory} from "react-router-dom"
 
 const config = {
     source: { label: "nfl_teams", view: "explorer", category: "nfl", node: "teams", type: "image", key: "logo", transform: "-25px" },
@@ -9,6 +10,8 @@ const config = {
 }
 
 function EXPLORER(props) {
+
+    let nav = useHistory()
 
     const height = window.innerHeight;
     const width = window.innerWidth;
@@ -34,7 +37,11 @@ function EXPLORER(props) {
                 .attr("height", 50)
                 .style("transform", "translate(-25px, -25px)")
                 .on('mouseover', functions.mouseOver)
-                //.on('mouseout', function (d, i) {})
+                .on('click', function (d, i) {
+                    if(i.properties && i.properties.label){
+                        nav.push(`/table/nfl/teams/games/${i.properties.label}`)
+                    }
+                })
                 .call(plugins.drag(functions.simulation));
         } else {
             return d3.select('svg g')

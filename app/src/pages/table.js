@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap"
 import Table from "../components/view/table"
-import FilterBar from "../components/controller/tablefilter"
+import FilterBar from "../components/controller/table_filter"
 
 function TablePage(props) {
 

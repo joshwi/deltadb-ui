@@ -4,8 +4,8 @@ import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Input, Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap"
 import Table from "../components/view/table"
-import Tablet from "../components/view/ollie"
-import FilterBar from "../components/controller/table_filter"
+import Card from "../components/view/card"
+import FilterBar from "../components/controller/correlation_filter"
 
 function TablePage(props) {
 
@@ -20,21 +20,21 @@ function TablePage(props) {
         return output
     }
 
-    const { category, source, target } = useParams()
+    const { category, source, target, label } = useParams()
 
     const db = useSelector(state => state.db)
     const params = useSelector(state => state.params);
-    const page = useSelector(state => state.pages[`table_${category}_${source}_${target}`]);
+    const page = useSelector(state => state.pages[`table_${category}_${source}_${target}_${label}`]);
     const [visible, SetVisible] = useState({ "filters": false, "headers": false, "options": false })
     const [pageSize, setPageSize] = useState(25)
 
     const closeBtn = <button className="close" style={{ border: 0, backgroundColor: "transparent" }} onClick={() => SetVisible({ ...visible, headers: false })}><i class="bi bi-x" style={{ fontSize: "2rem", color: "white" }} /></button>;
 
     useEffect(() => {
-        if (category && source) {
-            props.actions.setParams({ category: category, source: source, target: target })
+        if (category && source && target && label) {
+            props.actions.setParams({ category: category, source: source, target: target, label: label })
         }
-    }, [category, source])
+    }, [category, source, target, label])
 
     useEffect(() => {
         if (db.keys[`${params.category}_${params.source}`] !== undefined) {
@@ -46,7 +46,7 @@ function TablePage(props) {
                         return { header: entry, name: db.keys[`${params.category}_${params.source}`].keys[index], active: false }
                     }
                 })
-                props.actions.setPage(`table_${category}_${source}_${target}`, { headers: temp })
+                props.actions.setPage(`table_${category}_${source}_${target}_${label}`, { source_headers: temp })
             }
         }
         if (db.keys[`${params.category}_${params.target}`] !== undefined) {
@@ -58,7 +58,7 @@ function TablePage(props) {
                         return { header: entry, name: db.keys[`${params.category}_${params.target}`].keys[index], active: false }
                     }
                 })
-                props.actions.setPage(`table_${category}_${source}_${target}`, { target_headers: temp })
+                props.actions.setPage(`table_${category}_${source}_${target}_${label}`, { headers: temp })
             }
         }
     }, [db.keys, params])
@@ -92,13 +92,13 @@ function TablePage(props) {
                 <span style={{ margin: "30px" }} />
                 <Row>
                     <Col>
-                    {page && page.in_data && page.in_data.length > 0 && page.in_data[0].logo &&  <div className="d-flex justify-content-center" style={{  borderRadius: "10px", backgroundColor: `${page.in_data[0].primary_color}`}}><img src={page.in_data[0].logo} width="200" height="200"/></div>}
+                    {page && page.in_data && page.in_data.length > 0 && page.in_data[0].logo &&  <div className="d-flex justify-content-center" style={{  borderRadius: "10px", backgroundColor: `${page.in_data[0].primary_color}`}}><img src={page.in_data[0].logo} style={{display: "block"}} width="200" height="190"/></div>}
                     </Col>
                     <Col>
-                    {page && page.in_data && page.in_data.length > 0 && <Tablet rows={pageSize} headers={page.headers} options={{ header: false, filter: false, footer: false }} data={page.in_data ? page.in_data : []} {...props} />}
+                    {page && page.in_data && page.in_data.length > 0 && <Card rows={pageSize} headers={page.source_headers} options={{ header: false, filter: false, footer: false }} data={page.in_data ? page.in_data : []} {...props} />}
                     </Col>
                 </Row>
-                {page && page.out_data && page.out_data.length > 0 && <Table rows={pageSize} headers={page.target_headers} data={page.out_data ? page.out_data : []} {...props} />}
+                {page && page.out_data && page.out_data.length > 0 && <Table rows={pageSize} headers={page.headers} data={page.out_data ? page.out_data : []} {...props} />}
             </Container>
             <Modal size="xl" isOpen={visible.headers}>
                 <ModalHeader close={closeBtn} id="primaryColor" style={{ border: "none" }}><span id="primaryColor">Headers</span></ModalHeader>
@@ -106,7 +106,7 @@ function TablePage(props) {
                     <Row>
                         {page && page.headers && page.headers.map((entry) => {
                             return (
-                                <Col xs="3" onClick={() => props.actions.setPage(`table_${category}_${source}`, { headers: update(page.headers, entry.name) })}>
+                                <Col xs="3" onClick={() => props.actions.setPage(`table_${category}_${source}_${target}_${label}`, { headers: update(page.headers, entry.name) })}>
                                     <Label style={{ marginLeft: "5px" }} check>
                                         <Input type="checkbox" defaultChecked={entry.active} />{' '}
                                         {entry.header}
@@ -118,11 +118,11 @@ function TablePage(props) {
                 </ModalBody>
                 <ModalFooter id="primaryColor" style={{ border: "none" }}>
                     <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => {
-                        props.actions.setPage(`table_${category}_${source}`, { headers: page.headers.map((entry) => { return { ...entry, active: false } }) })
+                        props.actions.setPage(`table_${category}_${source}_${target}_${label}`, { headers: page.headers.map((entry) => { return { ...entry, active: false } }) })
                         SetVisible({ ...visible, headers: !visible.headers })
                     }}>{`Clear All `}<i className="bi bi-x" style={{ color: "white" }} /></button>
                     <button type="button" className="btn" id="secondaryColor" style={{ border: "none" }} onClick={() => {
-                        props.actions.setPage(`table_${category}_${source}`, { headers: page.headers.map((entry) => { return { ...entry, active: true } }) })
+                        props.actions.setPage(`table_${category}_${source}_${target}_${label}`, { headers: page.headers.map((entry) => { return { ...entry, active: true } }) })
                         SetVisible({ ...visible, headers: !visible.headers })
                     }}>{`Select All `}<i className="bi bi-check" style={{ color: "white" }} /></button>
                 </ModalFooter>

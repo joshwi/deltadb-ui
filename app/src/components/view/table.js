@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import _ from "underscore"
 import { CSVLink } from 'react-csv';
-import {Row, Col} from "reactstrap";
+import { Row, Col } from "reactstrap";
 import {
 	useTable,
 	usePagination,
@@ -15,6 +15,7 @@ import {
 	useBlockLayout,
 	useResizeColumns,
 } from 'react-table';
+// import { useHistory } from 'react-router-dom';
 
 function DefaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter, Header } }) {
 	// const count = preFilteredRows.length;
@@ -61,6 +62,8 @@ filterGreaterThan.autoRemove = (val) => typeof val !== 'number';
 
 function TableComponent(props) {
 
+	// const nav = useHistory()
+
 	const [data, SetData] = useState([])
 	const [columns, SetColumns] = useState([])
 	const [visible, SetVisible] = useState({ header: true, filter: true, footer: true })
@@ -94,7 +97,7 @@ function TableComponent(props) {
 		)
 	}
 
-	React.useEffect(() => { if(props.options){SetVisible(props.options)} }, [props.options])
+	React.useEffect(() => { if (props.options) { SetVisible(props.options) } }, [props.options])
 
 	React.useEffect(() => { SetData(props.data) }, [props.data])
 
@@ -228,6 +231,13 @@ function TableComponent(props) {
 										</td>
 									);
 								})}
+								{/* <td>
+									<button type="button" className="btn" id="primaryColor" style={{ border: "none" }}><i className="bi bi-box-arrow-in-down-right" id="secondaryColorText" onClick={() => {
+										if (row.original && row.original.label) {
+											nav.push(`/record/nfl/games/${row.original.label}`)
+										}
+									}} /></button>
+								</td> */}
 							</tr>
 						);
 					})}
@@ -236,12 +246,14 @@ function TableComponent(props) {
 					{page.map((row, id) => {
 						prepareRow(row);
 						return (
-							<div style={{padding: "5px 10px", margin: "10px 20px", border: "1.5px solid white", borderRadius: "5px"}}>
-							{content && !content[id] && row.cells.map((cell, index) => {
-							return <Row key={index} style={{textAlign: "left"}}><Col>{cell.column && cell.column.Header ? cell.column.Header : ""}</Col><Col>{cell.value}</Col></Row>})}
-							{content && content[id] && props.headers && props.headers.map((entry, index) => {
-							return <Row key={index} style={{textAlign: "left"}}><Col>{entry.header}</Col><Col>{row.original[entry.name]}</Col></Row>})}
-							<button type="button" onClick={() => {SetContent({...content, [id]: !content[id]})}} style={{ border: "none", backgroundColor: "transparent" }}><i className={`bi bi-chevron-${content && content[id] ? "up" : "down"}`} style={{ color: "white" }} /></button>
+							<div style={{ padding: "5px 10px", margin: "10px 20px", border: "1.5px solid white", borderRadius: "5px" }}>
+								{content && !content[id] && row.cells.map((cell, index) => {
+									return <Row key={index} style={{ textAlign: "left" }}><Col>{cell.column && cell.column.Header ? cell.column.Header : ""}</Col><Col>{cell.value}</Col></Row>
+								})}
+								{content && content[id] && props.headers && props.headers.map((entry, index) => {
+									return <Row key={index} style={{ textAlign: "left" }}><Col>{entry.header}</Col><Col>{row.original[entry.name]}</Col></Row>
+								})}
+								<button type="button" onClick={() => { SetContent({ ...content, [id]: !content[id] }) }} style={{ border: "none", backgroundColor: "transparent" }}><i className={`bi bi-chevron-${content && content[id] ? "up" : "down"}`} style={{ color: "white" }} /></button>
 							</div>
 						)
 					})}

@@ -10,8 +10,8 @@ import Sidebar from "./components/layout/sidebar"
 
 import Home from "./pages/home"
 import Table from "./pages/table"
-import TableSquared from "./pages/table_squared"
-import Chart from "./pages/chart"
+import Correlation from "./pages/correlation"
+// import Record from "./pages/record"
 import Explorer from "./pages/explorer"
 import Map from "./pages/map"
 import NotFound from "./pages/notFound"
@@ -35,7 +35,8 @@ function App(props) {
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path={"/table/:category/:node"} exact render={() => <Table {...props} />} />
-                <Route path={"/table/:category/:source/:target/:label"} exact render={() => <TableSquared {...props} />} />
+                <Route path={"/table/:category/:source/:target/:label"} exact render={() => <Correlation {...props} />} />
+                {/* <Route path={"/record/:category/:node/:label"} exact render={() => <Record {...props} />} /> */}
                 <Route path={"/explorer/:category/:source/:target"} exact render={() => <Explorer {...props} />} />
                 <Route path={"/map"} exact render={() => <Map {...props} />} />
                 <Route component={NotFound} />

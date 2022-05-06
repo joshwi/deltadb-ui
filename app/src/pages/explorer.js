@@ -6,7 +6,7 @@ import { Container, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu,
 import Draggable from "react-draggable"
 import _ from "underscore"
 
-import Filters from "../components/controller/filters"
+import Filters from "../components/controller/explorer_filter"
 import D3 from "../components/view/explorer"
 
 function Explorer(props) {

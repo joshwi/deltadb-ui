@@ -5,38 +5,34 @@ import { useParams } from "react-router-dom";
 import Fuse from "fuse.js";
 import { Input } from "reactstrap"
 import _ from "underscore"
-import { POST } from "../../utility/REST"
+import { get } from "../../utility/REST"
 
 function ExplorerFilters(props) {
 
-    const { category, source, target, label } = useParams()
+    const { category, node } = useParams()
 
     const db = useSelector(state => state.db)
     const params = useSelector(state => state.params);
-    const page = useSelector(state => state.pages[`explorer`]);
+    const page = useSelector(state => state.pages[`table_${category}_${node}`]);
 
     useEffect(() => {
-        if (category && source && target && label) {
-            props.actions.setParams({ category: category, source: source, target: target, label: label })
+        if (category && node) {
+            props.actions.setParams({ category: category, node: node })
         }
-    }, [category, source, target])
+    }, [category, node])
 
     const [search, SetSearch] = useState(false)
     const [validation, SetValidation] = useState([])
     const [properties, SetProperties] = useState([])
     const [results, SetResults] = useState([])
-    const [query, SetQuery] = useState(`b.week="[^\\d]+"`)
+    const [query, SetQuery] = useState('n.year="20.*" AND n.week="[^\\d]+" AND (n.home_team=".*Chiefs" OR n.away_team=".*Chiefs")')
 
     useEffect(() => {
-        if (db.keys[`${category}_${source}`] && db.keys[`${category}_${target}`] && db.keys[`${category}_${source}`].keys && db.keys[`${category}_${target}`].keys) {
-            let source_regex = `(\(|)a\.(${db.keys[`${category}_${source}`].keys.join("|")})=\"([^\"]{0,30})\"(\)|)`
-            let target_regex = `(\(|)b\.(${db.keys[`${category}_${target}`].keys.join("|")})=\"([^\"]{0,30})\"(\)|)`
-            let list = [
-                ...db.keys[`${category}_${source}`].keys.map(entry => { return `a.${entry}` }),
-                ...db.keys[`${category}_${target}`].keys.map(entry => { return `b.${entry}` })
-            ]
+        if (db.keys[`${category}_${node}`] && db.keys[`${category}_${node}`].keys) {
+            let source_regex = `(\(|)n\.(${db.keys[`${category}_${node}`].keys.join("|")})=\"([^\"]{0,30})\"(\)|)`
+            let list = db.keys[`${category}_${node}`].keys.map(entry => { return `n.${entry}` })
             SetProperties(list)
-            let query_regex = new RegExp(`((\\sAND\\s|\\sOR\\s)${source_regex}|(\\sAND\\s|\\sOR\\s)${target_regex}|${source_regex}|${target_regex})+`, "gm");
+            let query_regex = new RegExp(`((\\sAND\\s|\\sOR\\s)${source_regex}|${source_regex})+`, "gm");
             SetValidation([query_regex])
             SetSearch(!search)
         }
@@ -46,16 +42,15 @@ function ExplorerFilters(props) {
         if (query.length > 0 && validation.length > 0) {
             let check = validation.map(entry => { return query.search(entry) }).includes(-1)
             if (!check) {
-                let MATCH_STATEMENT = query.replaceAll("\=", "=~")
-                let cypher = `MATCH p=(a:${category}_${source})-[]->(b:${category}_${target}) WHERE a.label="${label}" AND ${MATCH_STATEMENT} RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link`
-                if (!page || page && cypher != page.query) {
-                    POST("/api/v2/admin/db/query", { "cypher": cypher }).then(response => {
-                        if (response.records && response.records.length > 0) {
-                            let input = response.records[0]
-                            let temp_source = input.source ? input.source.map(entry => {return entry.properties}) : []
-                            let temp_target = input.target ? input.target.map(entry => {return entry.properties}) : []
-                            props.actions.setPage(`table_${category}_${source}_${target}`, { query: cypher, data: response.records[0], in_data: temp_source, out_data: temp_target })
-                            // props.actions.setPage(`table_${category}_${source}_${target}`, { query: cypher, data: response.records[0] })
+                let cypher = query.replaceAll('\=\"', '=~"(?i)')
+
+                let url = new URL(`${window.location.origin}/api/v2/node/${category}_${node}`)
+                let parameters = { filter: cypher }
+                Object.keys(parameters).forEach(key => url.searchParams.append(key, parameters[key]))
+                if (!page || cypher !== page.query) {
+                    get(url).then(result => {
+                        if (result.length > 0) {
+                            props.actions.setPage(`table_${category}_${node}`, { query: cypher, data: result })
                         }
                     })
                 }
@@ -65,7 +60,7 @@ function ExplorerFilters(props) {
 
     function check(query, properties) {
 
-        var eoq = query.match(/(a|b)\.([\w]+|)$/)
+        var eoq = query.match(/(n)\.([\w]+|)$/)
         var test = eoq ? eoq.shift() : null
 
         if (test) {
@@ -79,7 +74,7 @@ function ExplorerFilters(props) {
     }
 
     const chooseTag = (tag) => {
-        SetQuery(query.replace(/(a|b)\.([\w]+|)$/, `${tag}="`))
+        SetQuery(query.replace(/(n)\.([\w]+|)$/, `${tag}="`))
         document.getElementById("search-bar").focus();
     }
 

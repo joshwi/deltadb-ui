@@ -22,9 +22,13 @@ function Home() {
                         - Export data from tables into .csv format
                         </p>
                         <div className="input-group mb-3">
-                            <Input className="secondaryColor" id="table_1" type="text" class="form-control" value={`n.year="20.*" AND n.week="[^\\d]+" AND (n.home_team=".*Chiefs" OR n.away_team=".*Chiefs")`} aria-describedby="basic-addon2" disabled />
-                            <span className="input-group-text secondaryColor" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("table_1") }}><i className="bi bi-clipboard" /></button></span>
+                            <Input className="secondaryColor secondaryColorBorder" id="table_1" type="text" class="form-control" value={`b.week="[^\\d]+"`} aria-describedby="basic-addon2" disabled />
+                            <span className="input-group-text secondaryColor secondaryColorBorder" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("table_1") }}><i className="bi bi-clipboard" /></button></span>
                         </div>
+                        {/* <div className="input-group mb-3">
+                            <Input className="secondaryColor secondaryColorBorder" id="table_1" type="text" class="form-control" value={`n.year="20.*" AND n.week="[^\\d]+" AND (n.home_team=".*Chiefs" OR n.away_team=".*Chiefs")`} aria-describedby="basic-addon2" disabled />
+                            <span className="input-group-text secondaryColor secondaryColorBorder" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("table_1") }}><i className="bi bi-clipboard" /></button></span>
+                        </div> */}
                     </Col>
                 </Row>
                 <Row>
@@ -36,20 +40,20 @@ function Home() {
                         - Export graph into .png format
                         </p>
                         <div className="input-group mb-3">
-                            <Input className="secondaryColor" id="explorer_1" type="text" class="form-control" value={`b.year="2020" AND b.week="[^\\d]+"`} aria-describedby="basic-addon2" disabled />
-                            <span className="input-group-text secondaryColor" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("explorer_1") }}><i className="bi bi-clipboard" /></button></span>
+                            <Input className="secondaryColor secondaryColorBorder" id="explorer_1" type="text" class="form-control" value={`b.year="2020" AND b.week="[^\\d]+"`} aria-describedby="basic-addon2" disabled />
+                            <span className="input-group-text secondaryColor secondaryColorBorder" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("explorer_1") }}><i className="bi bi-clipboard" /></button></span>
                         </div>
                         <div className="input-group mb-3">
-                            <Input className="secondaryColor" id="explorer_2" type="text" class="form-control" value={`b.week="SuperBowl"`} aria-describedby="basic-addon2" disabled />
-                            <span className="input-group-text secondaryColor" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("explorer_2") }}><i className="bi bi-clipboard" /></button></span>
+                            <Input className="secondaryColor secondaryColorBorder" id="explorer_2" type="text" class="form-control" value={`b.week="SuperBowl"`} aria-describedby="basic-addon2" disabled />
+                            <span className="input-group-text secondaryColor secondaryColorBorder" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("explorer_2") }}><i className="bi bi-clipboard" /></button></span>
                         </div>
                         <div className="input-group mb-3">
-                            <Input className="secondaryColor" id="explorer_3" type="text" class="form-control" value={`b.year="2013" AND b.home_team=".*Chiefs" AND b.home_rush_yds="1\\d\\d"`} aria-describedby="basic-addon2" disabled />
-                            <span className="input-group-text secondaryColor" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("explorer_3") }}><i className="bi bi-clipboard" /></button></span>
+                            <Input className="secondaryColor secondaryColorBorder" id="explorer_3" type="text" class="form-control" value={`b.year="2013" AND b.home_team=".*Chiefs" AND b.home_rush_yds="1\\d\\d"`} aria-describedby="basic-addon2" disabled />
+                            <span className="input-group-text secondaryColor secondaryColorBorder" id="basic-addon2"><button id="secondaryColor" style={{ border: "none" }} onClick={() => { copyToClipboard("explorer_3") }}><i className="bi bi-clipboard" /></button></span>
                         </div>
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <Col className="centerDiv"><i className="bi bi-bar-chart" id="secondaryColorText" style={{ fontSize: "5rem" }} /></Col>
                     <Col>
                         <p>
@@ -66,7 +70,7 @@ function Home() {
                         - Export map into .png format
                         </p>
                     </Col>
-                </Row>
+                </Row> */}
             </Container>
         </div>
     )

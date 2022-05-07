@@ -107,7 +107,7 @@ function EXPLORER(props) {
             //     return i.properties.label;
             //   });
             let label = i.labels.length > 0 ? i.labels[0] : ""
-            props.actions.setPage("explorer", { key: label, summary: { ...i.properties } })
+            props.actions.setPage("explorer_nfl_teams_games", { key: label, summary: { ...i.properties } })
         };
 
         d3.select(".d3-graph > *").remove()

@@ -15,7 +15,7 @@ function Explorer(props) {
 
     const db = useSelector(state => state.db)
     const params = useSelector(state => state.params);
-    const page = useSelector(state => state.pages[`explorer`]);
+    const page = useSelector(state => state.pages[`explorer_${category}_${source}_${target}`]);
 
     useEffect(() => {
         if (category && source && target) {

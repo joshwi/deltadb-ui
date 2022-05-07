@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Fuse from "fuse.js";
 import { Input } from "reactstrap"
 import _ from "underscore"
-import { POST } from "../../utility/REST"
+import { get, POST } from "../../utility/REST"
 
 function ExplorerFilters(props) {
 
@@ -46,14 +46,22 @@ function ExplorerFilters(props) {
         if (query.length > 0 && validation.length > 0) {
             let check = validation.map(entry => { return query.search(entry) }).includes(-1)
             if (!check) {
-                let MATCH_STATEMENT = query.replaceAll("\=", "=~")
-                let cypher = `MATCH p=(a:${category}_${source})-[]->(b:${category}_${target}) WHERE ${MATCH_STATEMENT} RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link`
+                let cypher  = query.replaceAll("\=", "=~")
+                // let cypher = `MATCH p=(a:${category}_${source})-[]->(b:${category}_${target}) WHERE ${MATCH_STATEMENT} RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link`
                 if (!page || page && cypher != page.query) {
-                    POST("/api/v2/admin/db/query", { "cypher": cypher }).then(response => {
+                    let url = new URL(`${window.location.origin}/api/v2/relationship/${category}_${source}/${category}_${target}`)
+                    let parameters = { filter: cypher }
+                    Object.keys(parameters).forEach(key => url.searchParams.append(key, parameters[key]))
+                    get(url).then(response => {
                         if (response.records && response.records.length > 0) {
-                            props.actions.setPage(`explorer`, { query: cypher, data: response.records[0] })
+                            props.actions.setPage(`explorer_${category}_${source}_${target}`, { query: cypher, data: response.records[0] })
                         }
                     })
+                    // POST("/api/v2/admin/db/query", { "cypher": cypher }).then(response => {
+                    //     if (response.records && response.records.length > 0) {
+                    //         props.actions.setPage(`explorer`, { query: cypher, data: response.records[0] })
+                    //     }
+                    // })
                 }
             }
         }

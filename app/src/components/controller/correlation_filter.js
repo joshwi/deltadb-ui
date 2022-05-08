@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Fuse from "fuse.js";
 import { Input } from "reactstrap"
 import _ from "underscore"
-import { get, POST } from "../../utility/REST"
+import { get } from "../../utility/REST"
 
 function ExplorerFilters(props) {
 
@@ -13,7 +13,7 @@ function ExplorerFilters(props) {
 
     const db = useSelector(state => state.db)
     const params = useSelector(state => state.params);
-    const page = useSelector(state => state.pages[`explorer`]);
+    const page = useSelector(state => state.pages[`table_${category}_${source}_${target}_${label}`]);
 
     useEffect(() => {
         if (category && source && target && label) {
@@ -41,26 +41,6 @@ function ExplorerFilters(props) {
             SetSearch(!search)
         }
     }, [db.keys])
-
-    // useEffect(() => {
-    //     if (query.length > 0 && validation.length > 0) {
-    //         let check = validation.map(entry => { return query.search(entry) }).includes(-1)
-    //         if (!check) {
-    //             let MATCH_STATEMENT = query.replaceAll("\=", "=~")
-    //             let cypher = `MATCH p=(a:${category}_${source})-[]->(b:${category}_${target}) WHERE a.label="${label}" AND ${MATCH_STATEMENT} RETURN collect(DISTINCT a) as source, collect(DISTINCT b) as target, collect(DISTINCT {source: a.label, target: b.label}) as link`
-    //             if (!page || page && cypher != page.query) {
-    //                 POST("/api/v2/admin/db/query", { "cypher": cypher }).then(response => {
-    //                     if (response.records && response.records.length > 0) {
-    //                         let input = response.records[0]
-    //                         let temp_source = input.source ? input.source.map(entry => {return entry.properties}) : []
-    //                         let temp_target = input.target ? input.target.map(entry => {return entry.properties}) : []
-    //                         props.actions.setPage(`table_${category}_${source}_${target}_${label}`, { query: cypher, data: response.records[0], in_data: temp_source, out_data: temp_target })
-    //                     }
-    //                 })
-    //             }
-    //         }
-    //     }
-    // }, [search])
 
     useEffect(() => {
         if (query.length > 0 && validation.length > 0) {

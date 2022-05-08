@@ -15,10 +15,8 @@ import {
 	useBlockLayout,
 	useResizeColumns,
 } from 'react-table';
-// import { useHistory } from 'react-router-dom';
 
-function DefaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter, Header } }) {
-	// const count = preFilteredRows.length;
+function DefaultColumnFilter({ column: { filterValue, setFilter, Header } }) {
 
 	return (
 		<input

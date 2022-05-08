@@ -90,10 +90,11 @@ function TablePage(props) {
                     </div>
                 </div>
                 <span style={{ margin: "30px" }} />
-                <Row>
+                <Row className="computer-content">
                     <Col>
                     {page && page.in_data && page.in_data.length > 0 && page.in_data[0].logo &&  <div className="d-flex justify-content-center" style={{  borderRadius: "10px", backgroundColor: `${page.in_data[0].primary_color}`}}><img src={page.in_data[0].logo} style={{display: "block"}} width="200" height="190"/></div>}
                     </Col>
+                    <span className="mobile-content" style={{margin: "10px"}}/>
                     <Col>
                     {page && page.in_data && page.in_data.length > 0 && <Card rows={pageSize} headers={page.source_headers} options={{ header: false, filter: false, footer: false }} data={page.in_data ? page.in_data : []} {...props} />}
                     </Col>

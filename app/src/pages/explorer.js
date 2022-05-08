@@ -72,7 +72,7 @@ function Explorer(props) {
                     </Dropdown>
                 </div>
             </div>
-            <D3 records={page && page.data ? page.data : {}} {...props} />
+            {page && page.data && <D3 records={page.data} {...props} />}
         </Container >
     )
 }
